@@ -268,6 +268,7 @@ wdi.ClientGui = $.spcExtend(wdi.EventObject.prototype, {
 		cnv.style.position = 'absolute';
 		cnv.style.top = this.canvasMarginY + 'px';
 		cnv.style.left = this.canvasMarginX + 'px';
+		cnv.style.zIndex = '0';
 
 		this.canvas[surface.surface_id] = cnv;
 		this.contexts[surface.surface_id] = cnv.getContext('2d');
@@ -280,7 +281,8 @@ wdi.ClientGui = $.spcExtend(wdi.EventObject.prototype, {
 			var evLayer = $(this.eventLayer).css({
 				position: 'absolute',
 				top: this.canvasMarginY + 'px',
-				left: this.canvasMarginX + 'px'
+			        left: this.canvasMarginX + 'px',
+			        zIndex: '0'
 			})[0];
 
 			if(this.layer) {

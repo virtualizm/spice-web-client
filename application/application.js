@@ -445,6 +445,86 @@ Application = $.spcExtend(wdi.DomainObject, {
         }
     },
 
+    sendCtrlAltDel: function() {
+        this.inputProcess.send([
+            "keydown",
+            [
+                {
+                    'generated': true,
+                    'type': "keydown",
+                    'keyCode': 17,
+                    'charCode': 0
+                }
+            ]
+
+        ], "keydown"); //ctrl down
+
+        this.inputProcess.send([
+            "keydown",
+            [
+                {
+                    'generated': true,
+                    'type': "keydown",
+                    'keyCode': 18,
+                    'charCode': 0
+                }
+            ]
+
+        ], "keydown"); //alt down
+
+        this.inputProcess.send([
+            "keydown",
+            [
+                {
+                    'generated': true,
+                    'type': "keydown",
+                    'keyCode': 46,
+                    'charCode': 0
+                }
+            ]
+
+        ], "keydown"); //del down
+
+        this.inputProcess.send([
+            "keyup",
+            [
+                {
+                    'generated': true,
+                    'type': "keyup",
+                    'keyCode': 46,
+                    'charCode': 0
+                }
+            ]
+
+        ], "keyup"); //del up
+
+        this.inputProcess.send([
+            "keyup",
+            [
+                {
+                    'generated': true,
+                    'type': "keyup",
+                    'keyCode': 18,
+                    'charCode': 0
+                }
+            ]
+
+        ], "keyup"); //alt up
+
+        this.inputProcess.send([
+            "keyup",
+            [
+                {
+                    'generated': true,
+                    'type': "keyup",
+                    'keyCode': 17,
+                    'charCode': 0
+                }
+            ]
+
+        ], "keyup"); //ctrl up
+    },
+
 	dispose: function () {
 		this.disableKeyboard();
 		this.disconnect();
