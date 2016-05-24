@@ -136,6 +136,7 @@ function notFullScreen() {
 }
 function sendCtrlAltDel() {
     app.sendCtrlAltDel();
+    document.getElementById("inputmanager").focus();
 }
 document.addEventListener("mozfullscreenchange", function () {
     (document.mozFullScreen) ? isFullScreen() : notFullScreen();
