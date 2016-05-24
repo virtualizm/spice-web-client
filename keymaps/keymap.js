@@ -6,6 +6,7 @@ wdi.Keymap = {
     keymap: {},
     ctrlKeymap: {},
     charmap: {},
+    pressedKeyMap: [],
     ctrlPressed: false,
     twoBytesScanCodes: [0x5B, 0xDB, /*0x38, 0xB8,*/ 0x5C, 0xDC, 0x1D, 0x9D, 0x5D, 0xDD, 0x52, 0xD2, 0x53, 0xD3, 0x4B, 0xCB, 0x47, 0xC9, 0x4F, 0xCF, 0x48, 0xC8, 0x50, 0xD0, 0x49, 0xC9, 0x51, 0xD1, 0x4D, 0xCD, 0x1C, 0x9C],
 
@@ -34,10 +35,19 @@ wdi.Keymap = {
      * @returns {*}
      */
     getScanCodes: function(e) {
-		if (e['hasScanCode']) {
-			return e['scanCode'];
-		} else if (this.handledByCtrlKeyCode(e['type'], e['keyCode'], e['generated'])) {// before doing anything else we check if the event about to be handled has to be intercepted
-            return this.getScanCodeFromKeyCode(e['keyCode'], e['type'], this.ctrlKeymap, this.reservedCtrlKeymap);
+        if (e['hasScanCode']) {
+            return e['scanCode'];
+        } else if (this.handledByCtrlKeyCode(e['type'], e['keyCode'], e['generated'])) {// before doing anything else we check if the event about to be handled has to be intercepted
+            scanCodes = this.getScanCodeFromKeyCode(e['keyCode'], e['type'], this.ctrlKeymap, this.reservedCtrlKeymap);
+            this.pressedKeyMap[e['keyCode']] = scanCodes;
+            console.log("handleByCtrl: keycode=" + e['keyCode'] + " scancodes=" + scanCodes);
+            return scanCodes;
+        } else if (this.handledByPreviousCtrlKeyCode(e['type'], e['keyCode'], e['generated'])) {
+            scanCodes = this.pressedKeyMap[e['keyCode']];
+            scanCodes[0][0] = scanCodes[0][0] | 0x80;
+            console.log("handleByPreviousCtrl: keycode=" + e['keyCode'] + " scancodes=" + scanCodes);
+            delete this.pressedKeyMap[e['keyCode']];
+            return scanCodes;
         } else if (this.handledByCharmap(e['type'])) {
             return this.getScanCodesFromCharCode(e['charCode']);
         } else if (this.handledByNormalKeyCode(e['type'], e['keyCode'])) {
@@ -92,6 +102,17 @@ wdi.Keymap = {
 
                 //check if the event is a fake event generated from our gui or programatically
                 if(generated && this.reservedCtrlKeymap[keyCode]) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    },
+
+    handledByPreviousCtrlKeyCode: function(type, keyCode, generated) {
+        if (type === 'keyup') {
+            if (!this.ctrlPressed) {
+                if (this.pressedKeyMap[keyCode] != undefined) {
                     return true;
                 }
             }

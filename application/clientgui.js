@@ -571,6 +571,7 @@ wdi.ClientGui = $.spcExtend(wdi.EventObject.prototype, {
 	},
 
 	handleKey: function(e) {
+		console.log("Type: " + e.type + " keyCode: " + e.keyCode);
 		e.data[0].generateEvent.call(e.data[0], e.type, [e]);
 
 		if (wdi.Keymap.isInKeymap(e.keyCode) && e.type !== "keypress") {

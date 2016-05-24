@@ -53,6 +53,7 @@ wdi.InputProcess = $.spcExtend(wdi.EventObject.prototype, {
 		} else if (type == 'keydown' || type == 'keypress') {
 			scanCodes = wdi.Keymap.getScanCodes(data[1][0]);
 			for (i= 0; i<scanCodes.length;i++) {
+				console.log("INPUTS_KEY_DOWN: " + scanCodes[i]);
 				packet = new wdi.SpiceMessage({
 					messageType: wdi.SpiceVars.SPICE_MSGC_INPUTS_KEY_DOWN,
 					channel: wdi.SpiceVars.SPICE_CHANNEL_INPUTS,
@@ -63,6 +64,7 @@ wdi.InputProcess = $.spcExtend(wdi.EventObject.prototype, {
 		} else if (type == 'keyup') {
 			scanCodes = wdi.Keymap.getScanCodes(data[1][0]);
 			for (i= 0; i<scanCodes.length;i++) {
+				console.log("INPUTS_KEY_UP: " + scanCodes[i]);
 				packet = new wdi.SpiceMessage({
 					messageType: wdi.SpiceVars.SPICE_MSGC_INPUTS_KEY_UP,
 					channel: wdi.SpiceVars.SPICE_CHANNEL_INPUTS,
