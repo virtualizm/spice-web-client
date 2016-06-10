@@ -56,12 +56,17 @@ function hideMenuBar() {
 
     }
 }
-function closeSession() {
+function closeSession(inactivity) {
     app.disconnect();
     
     if (document.getElementById("fullscreen").firstChild.data == "Ventana Normal") {
         toggleFullScreen(document.body);
     }
+
+	if (inactivity) {
+		document.getElementById("dialog-end-text").innerHTML =
+			"Su sesión de VDI finalizó por inactividad. Por favor, cierre esta ventana.";
+	}
 
     document.getElementById("overlay").style.visibility = "visible";
     document.getElementById("overlay").style.opacity = "1";
@@ -96,7 +101,7 @@ function closeAction(close) {
     document.getElementById("overlay").style.visibility = "hidden";
     document.getElementById("dialog-close").style.visibility = "hidden";
     if (close) {
-        closeSession();
+        closeSession(false);
     } else if (wasFS) {
         wasFS = false;
         toggleFullScreen(document.body);
@@ -141,3 +146,62 @@ function sendCtrlAltDel() {
 document.addEventListener("mozfullscreenchange", function () {
     (document.mozFullScreen) ? isFullScreen() : notFullScreen();
 }, false);
+inactivityTimer = null;
+inactivityCountdownTimer = null;
+inactivityCountdown = false;
+inactivityCountdownSecs = 0;
+inactivityClosed = false;
+function setInactivityTimer() {
+	if (inactivityTimeout == 0 || inactivityClosed) {
+		return;
+	}
+	if (inactivityCountdown) {
+		stopInactivityCountdown();
+	}
+	if (inactivityTimer != null) {
+		clearTimeout(inactivityTimer);
+	}
+	inactivityTimer = setTimeout(inactivityHandler, inactivityTimeout * 1000);
+}
+function inactivityHandler() {
+	startInactivityCountdown();
+}
+function startInactivityCountdown() {
+	document.getElementById("inactivity-close-text").innerHTML =
+		"Su sesión de VDI se cerrará por inactividad en " +
+		inactivityGrace + " segundos";
+	document.getElementById("overlay").style.visibility = "visible";
+    document.getElementById("inactivity-close").style.visibility = "visible";
+	if (inactivityCountdownTimer != null) {
+		clearTimeout(inactivityCountdownTimer);
+	}
+	inactivityCountdownSecs = inactivityGrace;
+	inactivityCountdownTimer = setTimeout(inactivityCountdownHandler, 1000);
+	inactivityCountdown = true;
+}
+function stopInactivityCountdown() {
+	document.getElementById("overlay").style.visibility = "hidden";
+    document.getElementById("inactivity-close").style.visibility = "hidden";
+	if (inactivityCountdownTimer != null) {
+		clearTimeout(inactivityCountdownTimer);
+	}
+	inactivityCountdown = false;
+	setInactivityTimer();
+	document.getElementById("inputmanager").focus();
+}
+function inactivityCountdownHandler() {
+	inactivityCountdownSecs -= 1;
+	if (inactivityCountdownSecs < 1) {
+		document.getElementById("inactivity-close").style.visibility = "hidden";
+		inactivityClosed = true;
+		closeSession(true);
+		return;
+	}
+	document.getElementById("inactivity-close-text").innerHTML =
+		"Su sesión de VDI se cerrará por inactividad en " +
+		inactivityCountdownSecs + " segundos";
+	if (inactivityCountdownTimer != null) {
+		clearTimeout(inactivityCountdownTimer);
+	}
+	inactivityCountdownTimer = setTimeout(inactivityCountdownHandler, 1000);
+}
