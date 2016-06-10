@@ -41,7 +41,15 @@ wdi.Keymap = {
             scanCodes = this.getScanCodeFromKeyCode(e['keyCode'], e['type'], this.ctrlKeymap, this.reservedCtrlKeymap);
             this.pressedKeyMap[e['keyCode']] = scanCodes;
             console.log("handleByCtrl: keycode=" + e['keyCode'] + " scancodes=" + scanCodes);
-            return scanCodes;
+            if (scanCodes.length > 0) {
+                if (e['type'] == 'keydown' || e['type'] == 'keypress') {
+                    return [[224, 29, 0], scanCodes[0]];
+                } else {
+                    return [[224, 157, 0], scanCodes[0]];
+                }
+            } else {
+                return scanCodes;
+            }
         } else if (this.handledByPreviousCtrlKeyCode(e['type'], e['keyCode'], e['generated'])) {
             scanCodes = this.pressedKeyMap[e['keyCode']];
             scanCodes[0][0] = scanCodes[0][0] | 0x80;

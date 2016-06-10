@@ -1,6 +1,8 @@
 wdi.InputProcess = $.spcExtend(wdi.EventObject.prototype, {
 	clientGui: null,
 	spiceConnection: null,
+	pendingCtrlKey: false,
+	pendingAltKey: false,
 	
 	init: function(c) {
 		this.superInit();
@@ -18,6 +20,7 @@ wdi.InputProcess = $.spcExtend(wdi.EventObject.prototype, {
 	
 	send: function(data, type) {
 		var packet, scanCodes, i;
+		setInactivityTimer();
 		if(type == 'mousemove') {
 			packet = new wdi.SpiceMessage({
 				messageType: wdi.SpiceVars.SPICE_MSGC_INPUTS_MOUSE_POSITION, 
@@ -52,8 +55,21 @@ wdi.InputProcess = $.spcExtend(wdi.EventObject.prototype, {
 			this.spiceConnection.send(packet);				
 		} else if (type == 'keydown' || type == 'keypress') {
 			scanCodes = wdi.Keymap.getScanCodes(data[1][0]);
+			if (scanCodes.length == 1 && !data[1][0]['generated']) {
+				if (scanCodes[0][0] == 56) {
+					console.log("INPUTS_KEY_DOWN: ommitting Alt key");
+					this.pendingAltKey = true;
+					return;
+				} else if (scanCodes[0][0] == 224 && scanCodes[0][1] == 29) {
+					console.log("INPUTS_KEY_DOWN: ommitting Ctrl key");
+					this.pendingCtrlKey = true;
+					return;
+				}
+			}
 			for (i= 0; i<scanCodes.length;i++) {
 				console.log("INPUTS_KEY_DOWN: " + scanCodes[i]);
+				this.pendingAltKey = false;
+				this.pendingCtrlKey = false;
 				packet = new wdi.SpiceMessage({
 					messageType: wdi.SpiceVars.SPICE_MSGC_INPUTS_KEY_DOWN,
 					channel: wdi.SpiceVars.SPICE_CHANNEL_INPUTS,
@@ -63,8 +79,29 @@ wdi.InputProcess = $.spcExtend(wdi.EventObject.prototype, {
 			}
 		} else if (type == 'keyup') {
 			scanCodes = wdi.Keymap.getScanCodes(data[1][0]);
+			if (this.pendingAltKey && scanCodes.length == 1 && scanCodes[0][0] == 184) {
+				console.log("INPUTS_KEY_UP: sending pending Alt key");
+				packet = new wdi.SpiceMessage({
+					messageType: wdi.SpiceVars.SPICE_MSGC_INPUTS_KEY_DOWN,
+					channel: wdi.SpiceVars.SPICE_CHANNEL_INPUTS,
+					args: new wdi.SpiceScanCode([56, 0, 0])
+				});
+				this.spiceConnection.send(packet);
+			}
+			if (this.pendingCtrlKey && scanCodes.length == 1 &&
+				scanCodes[0][0] == 224 && scanCodes[0][1] == 157) {
+				console.log("INPUTS_KEY_UP: sending pending Ctrl key");
+				packet = new wdi.SpiceMessage({
+					messageType: wdi.SpiceVars.SPICE_MSGC_INPUTS_KEY_DOWN,
+					channel: wdi.SpiceVars.SPICE_CHANNEL_INPUTS,
+					args: new wdi.SpiceScanCode([224, 29, 0])
+				});
+				this.spiceConnection.send(packet);
+			}
 			for (i= 0; i<scanCodes.length;i++) {
 				console.log("INPUTS_KEY_UP: " + scanCodes[i]);
+				this.pendingAltKey = false;
+				this.pendingCtrlKey = false;
 				packet = new wdi.SpiceMessage({
 					messageType: wdi.SpiceVars.SPICE_MSGC_INPUTS_KEY_UP,
 					channel: wdi.SpiceVars.SPICE_CHANNEL_INPUTS,
