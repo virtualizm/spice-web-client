@@ -293,7 +293,7 @@ wdi.ClientGui = $.spcExtend(wdi.EventObject.prototype, {
 				document.body.appendChild(evLayer);
 			}
 			
-			this.enableKeyboard();
+			//this.enableKeyboard();
 		}
 
 		//this goes here?
@@ -571,7 +571,8 @@ wdi.ClientGui = $.spcExtend(wdi.EventObject.prototype, {
 	},
 
 	handleKey: function(e) {
-		console.log("Type: " + e.type + " keyCode: " + e.keyCode);
+		console.log("Type: " + e.type + " keyCode: " + e.keyCode + " charCode: " + e.charCode);
+		document.getElementById("inputmanager").focus();
 		e.data[0].generateEvent.call(e.data[0], e.type, [e]);
 
 		if ((e.ctrlKey && !e.altKey) ||

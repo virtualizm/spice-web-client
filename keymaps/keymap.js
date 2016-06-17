@@ -34,10 +34,10 @@ wdi.Keymap = {
      * @param e
      * @returns {*}
      */
-    getScanCodes: function(e) {
+    getScanCodes: function(e, omitCtrl) {
         if (e['hasScanCode']) {
             return e['scanCode'];
-        } else if (this.handledByCtrlKeyCode(e['type'], e['keyCode'], e['generated'])) {// before doing anything else we check if the event about to be handled has to be intercepted
+        } else if (!omitCtrl && this.handledByCtrlKeyCode(e['type'], e['keyCode'], e['generated'])) {// before doing anything else we check if the event about to be handled has to be intercepted
             scanCodes = this.getScanCodeFromKeyCode(e['keyCode'], e['type'], this.ctrlKeymap, this.reservedCtrlKeymap);
             this.pressedKeyMap[e['keyCode']] = scanCodes;
             console.log("handleByCtrl: keycode=" + e['keyCode'] + " scancodes=" + scanCodes);
@@ -50,7 +50,7 @@ wdi.Keymap = {
             } else {
                 return scanCodes;
             }
-        } else if (this.handledByPreviousCtrlKeyCode(e['type'], e['keyCode'], e['generated'])) {
+        } else if (!omitCtrl && this.handledByPreviousCtrlKeyCode(e['type'], e['keyCode'], e['generated'])) {
             scanCodes = this.pressedKeyMap[e['keyCode']];
             scanCodes[0][0] = scanCodes[0][0] | 0x80;
             console.log("handleByPreviousCtrl: keycode=" + e['keyCode'] + " scancodes=" + scanCodes);
@@ -81,17 +81,21 @@ wdi.Keymap = {
                 return [this.makeKeymap(key | 0x80)];
             }
         } else {
+            var code = 0;
             if (type == 'keydown') {
-                return [this.makeKeymap(0xe0 | ((key - 0x100) << 8))];
+                code = (0xe0 | ((key - 0x100) << 8));
             } else if (type == 'keyup') {
-                return [this.makeKeymap(0x80e0 | ((key - 0x100) << 8))];
+                code = (0x80e0 | ((key - 0x100) << 8));
             }
+            var firstbyte = (code & 0x00FF);
+            var secondbyte = (code & 0xFF00) >> 8;
+            return [[firstbyte, secondbyte, 0, 0]];
         }
         return key;
     },
 
     controlPressed: function(keyCode, type) {
-        if (keyCode === 17 || keyCode === 91) {  // Ctrl or CMD key
+        if (keyCode === 17 /*|| keyCode === 91*/) {  // Ctrl or CMD key
             if (type === 'keydown') this.ctrlPressed = true;
             else if (type === 'keyup') this.ctrlPressed = false;
         }

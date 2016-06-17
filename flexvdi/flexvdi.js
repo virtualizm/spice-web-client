@@ -57,6 +57,9 @@ function hideMenuBar() {
     }
 }
 function closeSession(inactivity) {
+    clearTimeout(inactivityTimer);
+    clearTimeout(inactivityCountdownTimer);
+    app.sendWinL();
     app.disconnect();
     
     if (document.getElementById("fullscreen").firstChild.data == "Ventana Normal") {

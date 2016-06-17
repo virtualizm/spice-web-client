@@ -159,8 +159,8 @@ wdi.KeymapES = function() {
     keymapES[9]                 = 0x0F; // TAB
     //keymapES[20]                = 0x3A; // BLOQ.MAY. => see the charmap, all the capital letters and shift chars send a shift in their sequence
     keymapES[16]                = 0x2A; // LEFT SHIFT and RIGHT SHIFT
-	keymapES[91]                = 0x1D; // LEFT GUI (META, COMMAND) BINDED TO CONTROL
-	keymapES[17]                = 0x1D; // LEFT CONTROL and RIGHT CONTROL
+    keymapES[91]                = 0x15B; // LEFT GUI (META, COMMAND) BINDED TO CONTROL
+    keymapES[17]                = 0x1D; // LEFT CONTROL and RIGHT CONTROL
     //keymapES[32]                = 0x39; // SPACE => see the charmap
     keymapES[8]                 = 0x0E; // BACKSPACE
     keymapES[13]                = 0x1C; // ENTER
@@ -191,6 +191,7 @@ wdi.KeymapES = function() {
     keymapES[121]                = 0x44; // F10
     keymapES[122]                = 0x57; // F11
     keymapES[123]                = 0x58; // F12
+    keymapES[76]                 = 0x26; // v
 
     // combination keys with ctrl
     var ctrlKeymapES = [];
@@ -198,7 +199,7 @@ wdi.KeymapES = function() {
     ctrlKeymapES[65]                = 0x1E; // a
     ctrlKeymapES[81]                = 0x10; // q
     ctrlKeymapES[87]                = 0x11; // w
-    //ctrlKeymapES[69]                = 0x12; // e
+    ctrlKeymapES[69]                = 0x12; // e
     ctrlKeymapES[82]                = 0x13; // r
     ctrlKeymapES[84]                = 0x14; // t
     ctrlKeymapES[89]                = 0x15; // y

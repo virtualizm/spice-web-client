@@ -175,6 +175,7 @@ Application = $.spcExtend(wdi.DomainObject, {
         this.busConnection.addListener('busMessage', this.onBusMessage, this);
         this.busConnection.addListener('error', this.onDisconnect, this);
 		this.timeLapseDetector.addListener('timeLapseDetected', this.onTimeLapseDetected, this);
+        this.enableKeyboard();
     },
 
 	onChannelConnected: function(params) {
@@ -525,6 +526,58 @@ Application = $.spcExtend(wdi.DomainObject, {
         ], "keyup"); //ctrl up
     },
 
+    sendWinL: function() {
+        this.inputProcess.send([
+            "keydown",
+            [
+                {
+                    'generated': true,
+                    'type': "keydown",
+                    'keyCode': 91,
+                    'charCode': 0
+                }
+            ]
+
+        ], "keydown"); //win down
+        this.inputProcess.send([
+            "keydown",
+            [
+                {
+                    'generated': true,
+                    'type': "keydown",
+                    'keyCode': 76,
+                    'charCode': 0
+                }
+            ]
+
+        ], "keydown"); //L down
+
+        this.inputProcess.send([
+            "keyup",
+            [
+                {
+                    'generated': true,
+                    'type': "keyup",
+                    'keyCode': 76,
+                    'charCode': 0
+                }
+            ]
+
+        ], "keyup"); //L up
+
+        this.inputProcess.send([
+            "keyup",
+            [
+                {
+                    'generated': true,
+                    'type': "keyup",
+                    'keyCode': 91,
+                    'charCode': 0
+                }
+            ]
+
+        ], "keyup"); //win up
+    },
 	dispose: function () {
 		this.disableKeyboard();
 		this.disconnect();
