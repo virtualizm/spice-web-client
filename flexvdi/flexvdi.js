@@ -57,6 +57,7 @@ function hideMenuBar() {
     }
 }
 function closeSession(inactivity) {
+    inactivityClosed = true;
     clearTimeout(inactivityTimer);
     clearTimeout(inactivityCountdownTimer);
     app.sendWinL();
