@@ -191,7 +191,6 @@ wdi.KeymapES = function() {
     keymapES[121]                = 0x44; // F10
     keymapES[122]                = 0x57; // F11
     keymapES[123]                = 0x58; // F12
-    keymapES[76]                 = 0x26; // v
 
     // combination keys with ctrl
     var ctrlKeymapES = [];

@@ -58,8 +58,10 @@ wdi.Keymap = {
             return scanCodes;
         } else if (this.handledByCharmap(e['type'])) {
             return this.getScanCodesFromCharCode(e['charCode']);
-        } else if (this.handledByNormalKeyCode(e['type'], e['keyCode'])) {
-            return this.getScanCodeFromKeyCode(e['keyCode'], e['type'], this.keymap);
+        } else if (this.handledByNormalKeyCode(e['type'], e['keyCode'], e['generated'])) {
+            additionalKeymap = { };
+            additionalKeymap[76] = 0x26;
+            return this.getScanCodeFromKeyCode(e['keyCode'], e['type'], this.keymap, additionalKeymap);
         } else {
             return [];
         }
@@ -132,9 +134,12 @@ wdi.Keymap = {
         return false;
     },
 
-    handledByNormalKeyCode: function(type, keyCode) {
+    handledByNormalKeyCode: function(type, keyCode, generated) {
         if (type === 'keydown' || type === 'keyup') {
             if (this.keymap[keyCode]) {
+                return true;
+            } else if (generated && keyCode == 76) {
+                /* Special case to support generated Win+L */
                 return true;
             }
         }
