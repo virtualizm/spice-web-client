@@ -52,8 +52,13 @@ wdi.Socket = $.spcExtend(wdi.EventObject.prototype, {
 			this.binary = true;
 		}
 
-		this.websocket = new WebSocket(uri, protocol);
-		
+		try {
+		        this.websocket = new WebSocket(uri, protocol);
+		} catch (err) {
+			this.status = wdi.socketStatus.failed;
+			this.fire('error', err);
+		}
+
 		wdi.Debug.log("Socket: using protocol: "+protocol);
 		
 		if(this.binary) {

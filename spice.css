@@ -1,7 +1,9 @@
 body
 {
-  background-color: #f2f2f2;
-  color: #000000; margin: 0; padding: 0;
+  background-color: #E6E6E6;
+  background: url(resources/pattern-01.png);
+  background-repeat: repeat, no-repeat;
+  background-blend-mode: multiply, normal;
   font-family: "Lucida Grande", "Lucida Sans Unicode", "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
   font-size: 12pt;
   line-height: 1.5em;
@@ -20,7 +22,8 @@ body
 
     margin-left: auto;
     margin-right: auto;
-    background-color: rgba(0, 161, 193, 0.9);
+    background-color: rgba(255, 255, 255, 0.6);
+    color: #666;
     -moz-border-radius: 0px;
     -webkit-border-radius: 0px;
     border-radius: 0px;
@@ -36,7 +39,7 @@ body
 #login.hidden
 {
     position: fixed;
-    margin-top: -34px;
+    margin-top: -45px;
 }
 #login.hidden-peek
 {
@@ -44,19 +47,39 @@ body
 }
 #login span.logo
 {
-    display: inline-block;
-    margin: 2.5px;
-    background-image: url(resources/flexvdi-logo.png);
-    height: 25px;
-    width: 120px;
-    background-size: cover;
+    vertical-align: super;
+    margin: 2px;
+    font-size: 28px;
+    font-family: 'Sansita One',cursive,Arial,sans-serif;
+    font-weight: 200;
+    color: #666;
+}
+#login span.slogan
+{
+    vertical-align: super;
+    margin: 2px;
+    font-size: 1.1em;
+    line-height: 2.5em;
+    font-family: Quicksand,Arial,sans-serif;
+    color: #666;
+}
+#login .float
+{
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #login .float-right
 {
     float:right;
     margin-right: .5em;
-    margin-top: .25em;
+    margin-top: .40em;
+}
+#login .float-left
+{
+    float:left;
+    margin-right: .5em;
 }
 #login label { color: #ffffff; text-shadow: 1px 1px 0px rgba(175, 210, 220, 0.8); }
 #login input
@@ -82,7 +105,7 @@ body
     border: none;
     cursor: pointer;
     background-color: transparent;
-    color: rgba(255, 255, 255, 0.8);
+    color: #666;
     -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;
 }
 #login button:hover
@@ -100,6 +123,15 @@ body
 #login button#close:hover
 {
     background-image:url(resources/button-close-highlight.png);
+}
+
+#login img
+{
+    margin-top: 5px;
+    margin-left: 30px;
+    width: 32px;
+    height: 32px;
+    opacity: .7;
 }
 
 #overlay {
@@ -209,5 +241,142 @@ body
     width: 100%;
     height: 100%;
     border: none;
+}
+/*Logo Animation*/
+.load .text-center {
+  overflow: hidden;
+}
+.logo-animation {
+  margin-top: 25%;
+  margin-left: 40%;
+  width: 270px;
+}
+#logo-svg-viubo {
+  animation-name: load;
+  animation-duration: 4s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 1;
+  transform-origin: 50% 50%;
+}
+#logo-svg-viubo {
+  overflow: visible !important;
+  animation-name: load-rotation;
+  animation-duration: 4s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  transform-origin: 50% 40%;
+}
+svg#logo-viubo-1:not(:root),
+svg#logo-viubo-2:not(:root) {
+  overflow: visible;
+}
+#logo-viubo-1,
+#logo-viubo-2 {
+  fill: #10afc4;
+  animation-name: load-one;
+  animation-duration: 4s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 1;
+  transform-origin: 50% 50%;
+}
+#logo-viubo-2 {
+  animation-name: load;
+}
+@keyframes load-rotation {
+  0% {
+    /* IE 9 */
+    /* Safari */
+    transform: rotate(0deg);
+  }
+  25% {
+    /* IE 9 */
+    /* Safari */
+    transform: rotate(0deg);
+  }
+  50% {
+    /* IE 9 */
+    /* Safari */
+    transform: rotate(0deg);
+  }
+  75% {
+    /* IE 9 */
+    /* Safari */
+    transform: rotate(360deg);
+  }
+  100% {
+    /* IE 9 */
+    /* Safari */
+    transform: rotate(360deg);
+  }
+}
+@keyframes load {
+  0% {
+    fill: #10afc4;
+    /* IE 9 */
+    /* Safari */
+    transform: translate(1500px, -1200px);
+  }
+  25% {
+    fill: #ffd64f;
+    transform-origin: 50% 50%;
+    /* IE 9 */
+    /* Safari */
+    transform: translate(0px, 0px);
+  }
+  50% {
+    fill: #ffd64f;
+    transform-origin: 50% 50%;
+    /* IE 9 */
+    /* Safari */
+    transform: translate(0px, 0px);
+  }
+  75% {
+    fill: #ffd64f;
+    transform-origin: 50% 50%;
+    /* IE 9 */
+    /* Safari */
+    transform: translate(0px, 0px);
+  }
+  100% {
+    fill: #10afc4;
+    /* IE 9 */
+    /* Safari */
+    transform: translate(0px, 0px);
+  }
+}
+@keyframes load-one {
+  0% {
+    fill: #10afc4;
+    /* IE 9 */
+    /* Safari */
+    transform: translate(-1500px, -1200px);
+  }
+  25% {
+    fill: #ffd64f;
+    transform-origin: 50% 50%;
+    /* IE 9 */
+    /* Safari */
+    transform: translate(0px, 0px);
+  }
+  50% {
+    fill: #ffd64f;
+    transform-origin: 50% 50%;
+    /* IE 9 */
+    /* Safari */
+    transform: translate(0px, 0px);
+  }
+  75% {
+    fill: #ffd64f;
+    transform-origin: 50% 50%;
+    /* IE 9 */
+    /* Safari */
+    transform: translate(0px, 0px);
+  }
+  100% {
+    fill: #10afc4;
+    /* IE 9 */
+    /* Safari */
+    transform: translate(0px, 0px);
+  }
 }
 

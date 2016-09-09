@@ -8,41 +8,34 @@ function read_cookie(name) {
     }
     return null;
 }
-function toggleMenuBar() {
+function fixCanvasLocation(top_margin) {
     var width = $(window).width();
     var height = $(window).height();
-        
+    var canvas = document.getElementById('canvas_0');
+    var eventLayer = document.getElementById('eventLayer');
+
+    if (canvas != null && eventLayer != null) {
+        var left_margin = 0;
+        if (canvas.offsetWidth < width) {
+            left_margin = (width - canvas.offsetWidth) / 2;
+        }
+        canvas.style.top = top_margin + "px";
+        canvas.style.marginLeft = left_margin + "px";
+        eventLayer.style.top = top_margin + "px";
+        eventLayer.style.marginLeft = left_margin + "px";
+        app.clientGui.setCanvasMargin({"x": left_margin, "y": top_margin})
+        app.clientGui.setClientOffset(-left_margin, -top_margin);
+    }
+}
+function toggleMenuBar() {
     if (document.getElementById("login").className == "") {
+        fixCanvasLocation(0);
         document.getElementById("login").className = "hidden";
-        document.getElementById("menubarbutton").firstChild.data = "Fijar Menu";
-                
-        var canvas = document.getElementById('canvas_0');
-        var eventLayer = document.getElementById('eventLayer');
-        if (canvas != null && eventLayer != null) {
-            canvas.style.top = "0px";
-            eventLayer.style.top = "0px";
-            app.clientGui.setCanvasMargin({"x": 0, "y": 0})
-            app.clientGui.setClientOffset(0, 0);
-            app.sendCommand('setResolution', {
-			    'width': width,
-			    'height': height
-		    });
-        }
+        document.getElementById("menubarbutton").firstChild.data = "Pin Menu";
     } else {        
-        var canvas = document.getElementById('canvas_0');
-        var eventLayer = document.getElementById('eventLayer');
-        if (canvas != null && eventLayer != null) {
-            canvas.style.top = "40px";
-            eventLayer.style.top = "40px";
-            app.clientGui.setCanvasMargin({"x": 0, "y": 40})
-            app.clientGui.setClientOffset(0, -40);
-            app.sendCommand('setResolution', {
-                'width': width,
-                'height': height - 40
-            });
-        }
+        fixCanvasLocation(45);
         document.getElementById("login").className = "";
-        document.getElementById("menubarbutton").firstChild.data = "Ocultar Menu";
+        document.getElementById("menubarbutton").firstChild.data = "Hide Menu";
     }
 }
 function showMenuBar() {
@@ -56,25 +49,26 @@ function hideMenuBar() {
 
     }
 }
-function closeSession(inactivity) {
+function closeSession(error) {
     inactivityClosed = true;
     clearTimeout(inactivityTimer);
     clearTimeout(inactivityCountdownTimer);
-    app.sendWinL();
-    app.disconnect();
+    if (!error) {
+       app.disconnect();
+    }
     
-    if (document.getElementById("fullscreen").firstChild.data == "Ventana Normal") {
-        toggleFullScreen(document.body);
+    if (error) {
+        document.getElementById("dialog-end-text").innerHTML =
+          "There was a connection error. Please close this tab and try again later";
     }
 
-	if (inactivity) {
-		document.getElementById("dialog-end-text").innerHTML =
-			"Su sesión de VDI finalizó por inactividad. Por favor, cierre esta ventana.";
-	}
-
     document.getElementById("overlay").style.visibility = "visible";
-    document.getElementById("overlay").style.opacity = "1";
+    document.getElementById("overlay").style.opacity = "0.7";
     document.getElementById("dialog-end").style.visibility = "visible";
+    var canvas = document.getElementById('canvas_0');
+    if (canvas) {
+        canvas.style.visibility = "hidden";
+    }
 }
 function showClientID() {
     var hwaddress = read_cookie("hwaddress");

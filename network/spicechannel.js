@@ -93,12 +93,12 @@ wdi.SpiceChannel = $.spcExtend(wdi.EventObject.prototype, {
 		this.socketQ.addListener('error', function() {
 			this.fire('error', 3);
 			this.socketQ.disconnect();
-//			throw new wdi.Exception({message:"Socket error", errorCode: 2});
+			throw new wdi.Exception({message:"Socket error", errorCode: 2});
 		}, this);
 	},
 
 	connect: function(connectionInfo, channel, connectionId, proxy) {
-		var url = wdi.Utils.generateWebSocketUrl(connectionInfo.protocol, connectionInfo.host, connectionInfo.port, connectionInfo.vmHost, connectionInfo.vmPort, 'spice', connectionInfo.vmInfoToken);
+		var url = wdi.Utils.generateWebSocketUrl(connectionInfo.protocol, connectionInfo.host, connectionInfo.port, connectionInfo.vmHost, connectionInfo.vmPort, 'spice', connectionInfo.token);
 		this.channel = channel;
 		this.connectionId = connectionId || 0;
 		this.socketQ.connect(url);

@@ -38,12 +38,23 @@ function getURLParameter (name) {
 }
 
 
-wdi.Debug.debug = false; //enable logging to javascript console
+wdi.Debug.debug = true; //enable logging to javascript console
 wdi.exceptionHandling = false; //disable "global try catch" to improve debugging
 //if enabled, console errors do not include line numbers
 //wdi.SeamlessIntegration = false; //enable window integration. (if disabled, full desktop is received)
 
 wdi.IntegrationBenchmarkEnabled = false;// MS Excel loading time benchmark
+
+
+function callback(params) {
+	console.log(params);
+        document.getElementById("logo-svg-viubo").style.visibility = "hidden";
+        if (params == "resolution") {
+		fixCanvasLocation(45);
+	} else {
+	   	closeSession(true);
+	}
+}
 
 function start () {
 	var testSessionStarted = false;
@@ -220,17 +231,31 @@ function start () {
 		jQuery.getScript("performanceTests/tests/wordscroll.js");
 	}
 
-	var data = read_cookie("token")
-	console.log(data);
-	data = JSON.parse(data);
+
+	ticket_id = getURLParameter('ticket');
+
+	if (ticket_id === null || ticket_id.length != 17) {
+		console.log("invalid ticket");
+		closeSession(true);
+		return;
+	}
+
+	values = ticket_id.split("-");
+	if (values.length != 2) {
+		console.log("invalid ticket");
+		closeSession(true);
+		return;
+	}
+
+	host = values[0].substring(4, 8) + "." + values[0].substring(0, 4) + ".viubo.com"
 
 	app.run({
-		'callback': f,
+		'callback': callback,
 		'context': this,
-		'host': data.spice_address,
-		'port': data.spice_port,
+		'host': host,
+		'port': 443,
 		'protocol': getURLParameter('protocol') || 'ws',
-		'token': data.spice_password,
+		'token': ticket_id,
 		'vmHost': getURLParameter('vmhost') || false,
 		'vmPort': getURLParameter('vmport') || false,
 		'useBus': false,

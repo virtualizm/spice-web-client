@@ -36,6 +36,8 @@ must display the words "Powered by eyeos" and retain the original copyright noti
     <head>
         <title>flexVDI WebPortal - powered by eyeOS</title>
         <meta charset="utf-8">
+        <link href='https://fonts.googleapis.com/css?family=Sansita+One' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Quicksand:400,300,700' rel='stylesheet' type='text/css'>
         <!-- libs -->
         <script src="lib/modernizr.js"></script>
         <script src="lib/jquery-2.0.3.js"></script>
@@ -129,7 +131,6 @@ must display the words "Powered by eyeos" and retain the original copyright noti
 	<link rel="stylesheet" type="text/css" href="spice.css">
         <style type="text/css">
             body {
-                background-color:black;
                 padding:0;
                 margin:0;
             }
@@ -175,14 +176,17 @@ must display the words "Powered by eyeos" and retain the original copyright noti
     </head>
     <body>
         <div id="login" onMouseOver="showMenuBar();" onMouseOut="hideMenuBar();">
-            <span class="logo"></span>
+            <div class="float">
+            <div class="float-left">
+                <img src="resources/viubo-logo.png"></img>
+                <span class="logo">viubo</span>
+                <span class="slogan">View.Share.Do.</span>
+            </div>
             <div class="float-right">
-                <button id="uploadfile" onclick="showExtWin();">Subir Fichero</button>
-                <button id="menubarbutton" onclick="toggleMenuBar();">Ocultar Menu</button>
-                <button id="fullscreen" onclick="toggleFullScreen(document.body);">Pantalla Completa</button>
-                <button id="ctrlaltdel" onclick="sendCtrlAltDel();">Enviar Ctrl+Alt+Del</button>
-                <button id="showclientid" onclick="showClientID();">Mostrar Id</button>
+                <button id="menubarbutton" onclick="toggleMenuBar();">Hide Menu</button>
+                <button id="ctrlaltdel" onclick="sendCtrlAltDel();">Send Ctrl+Alt+Del</button>
                 <button id="close" onclick="showCloseDialog();">&nbsp</button>
+            </div>
             </div>
         </div>
 
@@ -213,7 +217,7 @@ must display the words "Powered by eyeos" and retain the original copyright noti
 
         <div id="dialog-close" class="overlay-dialog">
             <div id="dialog-close-text" class="overlay-text">
-                Su sesión de VDI se cerrará. Por favor, asegúrese de que ha guardado sus cambios.
+                This viubo session will be closed. Are you sure?
             </div>
             <div id="dialog-close-input" class="overlay-input">
                 <button class="float-right" type="button" onclick="closeAction(false)">Cancelar</button>
@@ -222,7 +226,7 @@ must display the words "Powered by eyeos" and retain the original copyright noti
         </div>
         <div id="dialog-end" class="overlay-dialog">
             <div id="dialog-end-text" class="overlay-text-end">
-                Su sesión de VDI ha finalizado. Por favor, cierre esta ventana.
+                This viubo session has been finished. Please close this tab.
             </div>
         </div>
 
@@ -246,26 +250,29 @@ must display the words "Powered by eyeos" and retain the original copyright noti
             </div>
             <iframe src="extwin.html"></iframe>
         </div>
-
-        <script>
-            var fsmode = read_cookie("fsmode");
-            if (fsmode == "true") {
-                document.getElementById("overlay").style.visibility = "visible";
-                document.getElementById("dialog-fs").style.visibility = "visible";
-            }
-
-            if (exturl == null || exturl == "") {
-                document.getElementById("uploadfile").style.visibility = "hidden";
-            }
-
-            if (extwidth != null && extwidth != "") {
-                document.getElementById("extwin").style.width = extwidth;
-            }
-
-            if (extheight != null && extheight != "") {
-                document.getElementById("extwin").style.height = extheight;
-            }
-			setInactivityTimer();
-        </script>
+        <div class="row logo-animation" id="logo-svg-viubo">
+            <svg version="1.1" id="logo-viubo-1" 
+                 x="0px" y="0px"
+                 width= "128"
+                 height= "128"
+                 viewBox="-310 0 600 600"
+                 preserveAspectRatio = "xMinYMin slice" > 
+                 <path d="M491.1,317.1l-70.6,83.2L351,475.1c-17.9,20.5-49.2,22.2-69.6,4.4L147.3,364L16.4,244.2
+                     c-20.2-17.9-22-49.4-4.1-69.7l67.9-81.4l72.2-76.5c17.9-20.5,49.2-22.2,69.6-4.4L323.1,98l-23.8,25.4L186.2,23.2L22.3,208.5
+                     l165.6,147l125.7,117.2l2.5-3.3l0.8,0.8l32.2-36.6l151.9-163.9C506.4,285.7,503.1,303.6,491.1,317.1z M468.1,247.7l-25.4-23
+                     l-5.1,5.1l25.4,23L468.1,247.7z M416.4,200.9l-25.4-23l-5.1,5.1l25.4,23L416.4,200.9z M365.4,154.3l-25.4-23l-5.1,5.1l25.4,23
+                     L365.4,154.3z"/>
+           </svg>
+           <svg version="1.1" id="logo-viubo-2" 
+                x="0px" y="0px"
+                width= "128"
+                height= "128"
+                viewBox="310 0 600 600"
+                preserveAspectRatio = "xMinYMin slice">
+                <path d="M429.5,13.1c-20-18.2-49.9-17.4-68.1,2.5L240.1,140.1L124.8,269.5c-18.2,20-17.4,49.9,2.5,68.1
+                      l73.2,72.2l77.9,68.9c20,18.2,49.9,17.4,68.1-2.5L466,351.7l116.2-128.6c18.2-20,17.4-49.9-2.5-68.1l-71.5-70.6L429.5,13.1z
+                       M574,188.3L311.5,469.7L134.6,304.5L397.1,22.9L574,188.3z"/>
+           </svg>
+       </div>
     </body>
 </html>
