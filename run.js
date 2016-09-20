@@ -247,7 +247,7 @@ function start () {
 		return;
 	}
 
-	host = values[0].substring(4, 8) + "." + values[0].substring(0, 4) + ".viubo.com"
+	host = values[0] + ".viubo.com"
 
 	app.run({
 		'callback': callback,
