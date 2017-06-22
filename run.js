@@ -222,15 +222,15 @@ function start () {
 
 	var data = read_cookie("token")
 	console.log(data);
-	data = JSON.parse(data);
+	data = JSON.parse(data) || {};
 
 	app.run({
 		'callback': f,
 		'context': this,
-		'host': data.spice_address,
-		'port': data.spice_port,
+		'host': data['spice_address'] || '',
+		'port': data['spice_port'] || 0,
 		'protocol': getURLParameter('protocol') || 'ws',
-		'token': data.spice_password,
+		'token': data['spice_password'] || '',
 		'vmHost': getURLParameter('vmhost') || false,
 		'vmPort': getURLParameter('vmport') || false,
 		'useBus': false,
@@ -244,7 +244,7 @@ function start () {
         'heartbeatToken': 'heartbeat',
 		'heartbeatTimeout': 4000,//miliseconds
 		'busFileServerBaseUrl': 'https://10.11.12.200/fileserver/',
-		'layout': 'es',
+		'layout': data['layout'] || 'es',
 		'clientOffset': {
 			'x': 0,
 			'y': -40
