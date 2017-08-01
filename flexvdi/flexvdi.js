@@ -14,7 +14,7 @@ function toggleMenuBar() {
         
     if (document.getElementById("login").className == "") {
         document.getElementById("login").className = "hidden";
-        document.getElementById("menubarbutton").firstChild.data = "Fijar Menu";
+        document.getElementById("menubarbutton").firstChild.data = tr["menubarbutton_alt"];
                 
         var canvas = document.getElementById('canvas_0');
         var eventLayer = document.getElementById('eventLayer');
@@ -42,7 +42,7 @@ function toggleMenuBar() {
             });
         }
         document.getElementById("login").className = "";
-        document.getElementById("menubarbutton").firstChild.data = "Ocultar Menu";
+        document.getElementById("menubarbutton").firstChild.data = tr["menubarbutton"];
     }
 }
 function showMenuBar() {
@@ -63,22 +63,22 @@ function closeSession(inactivity) {
     app.sendWinL();
     app.disconnect();
     
-    if (document.getElementById("fullscreen").firstChild.data == "Ventana Normal") {
+    if (document.getElementById("fullscreen").firstChild.data == tr["fullscreen_alt"]) {
         toggleFullScreen(document.body);
     }
 
-	if (inactivity) {
-		document.getElementById("dialog-end-text").innerHTML =
-			"Su sesión de VDI finalizó por inactividad. Por favor, cierre esta ventana.";
-	}
-
     document.getElementById("overlay").style.visibility = "visible";
     document.getElementById("overlay").style.opacity = "1";
-    document.getElementById("dialog-end").style.visibility = "visible";
+
+    if (inactivity) {
+        document.getElementById("inactivity-end").style.visibility = "visible";
+    } else {
+        document.getElementById("dialog-end").style.visibility = "visible";
+	}
 }
 function showClientID() {
     var hwaddress = read_cookie("hwaddress");
-    alert("El identificador de este navegador es: " + hwaddress);
+    alert(tr["show_id"].replace("_", hwaddress));
 }
 var progFS = false;
 var isFS = false;
@@ -88,7 +88,7 @@ function toggleFullScreen(elem) {
         if (elem.mozRequestFullScreen) {
             elem.mozRequestFullScreen();
         } else {
-            alert("Este navegador no soporta el cambio automatico a pantalla completa. Por favor, pulse F11 para cambiar de forma manual");
+            alert(tr["no_auto_fs"]);
         }
     } else {
         if (document.mozCancelFullScreen) {
@@ -129,12 +129,12 @@ function hideExtWin() {
 }
 function isFullScreen() {
     isFS = true;
-    document.getElementById("fullscreen").firstChild.data = "Ventana Normal";
+    document.getElementById("fullscreen").firstChild.data = tr["fullscreen_alt"];
     document.getElementById("menubarbutton").style.visibility = "hidden";
 }
 function notFullScreen() {
     isFS = false;
-    document.getElementById("fullscreen").firstChild.data = "Pantalla Completa";
+    document.getElementById("fullscreen").firstChild.data = tr["fullscreen"];
     document.getElementById("menubarbutton").style.visibility = "visible";
     if (progFS) {
         progFS = false;
@@ -171,9 +171,8 @@ function inactivityHandler() {
 	startInactivityCountdown();
 }
 function startInactivityCountdown() {
-	document.getElementById("inactivity-close-text").innerHTML =
-		"Su sesión de VDI se cerrará por inactividad en " +
-		inactivityGrace + " segundos";
+    document.getElementById("inactivity_close_text").innerHTML =
+        tr["inactivity_close_text"].replace("_", inactivityGrace);
 	document.getElementById("overlay").style.visibility = "visible";
     document.getElementById("inactivity-close").style.visibility = "visible";
 	if (inactivityCountdownTimer != null) {
@@ -201,9 +200,8 @@ function inactivityCountdownHandler() {
 		closeSession(true);
 		return;
 	}
-	document.getElementById("inactivity-close-text").innerHTML =
-		"Su sesión de VDI se cerrará por inactividad en " +
-		inactivityCountdownSecs + " segundos";
+    document.getElementById("inactivity_close_text").innerHTML =
+        tr["inactivity_close_text"].replace("_", inactivityCountdownSecs);
 	if (inactivityCountdownTimer != null) {
 		clearTimeout(inactivityCountdownTimer);
 	}

@@ -123,6 +123,7 @@ must display the words "Powered by eyeos" and retain the original copyright noti
 		<script src="flexvdi/inactivity.js"></script>
         <script src="flexvdi/flexvdi.js"></script>
         <script src="flexvdi/extwin.js"></script>
+        <script src="translation.js"></script>
         <script src="run.js"></script>
         <!-- end core -->
         <meta content="yes" name="apple-mobile-web-app-capable" />
@@ -203,46 +204,46 @@ must display the words "Powered by eyeos" and retain the original copyright noti
 
         <div id="overlay"></div>
         <div id="dialog-fs" class="overlay-dialog">
-            <div id="dialog-fs-text" class="overlay-text">
+            <div id="dialog_fs_text" class="overlay-text">
                 La aplicación solicita permiso para acceder a su Escritorio VDI en modo Pantalla Completa.
             </div>
             <div id="dialog-fs-input" class="overlay-input">
-                <button class="float-right" type="button" onclick="overlayAction(false)">Cancelar</button>
-                <button class="float-right" type="button" onclick="overlayAction(true)">Aceptar</button>
+                <button class="float-right tr-cancel" type="button" onclick="overlayAction(false)">Cancelar</button>
+                <button class="float-right tr-accept" type="button" onclick="overlayAction(true)">Aceptar</button>
             </div>
         </div>
 
         <div id="dialog-close" class="overlay-dialog">
-            <div id="dialog-close-text" class="overlay-text">
+            <div id="dialog_close_text" class="overlay-text">
                 Su sesión de VDI se cerrará. Por favor, asegúrese de que ha guardado sus cambios.
             </div>
             <div id="dialog-close-input" class="overlay-input">
-                <button class="float-right" type="button" onclick="closeAction(false)">Cancelar</button>
-                <button class="float-right" type="button" onclick="closeAction(true)">Aceptar</button>
+                <button class="float-right tr-cancel" type="button" onclick="closeAction(false)">Cancelar</button>
+                <button class="float-right tr-accept" type="button" onclick="closeAction(true)">Aceptar</button>
             </div>
         </div>
         <div id="dialog-end" class="overlay-dialog">
-            <div id="dialog-end-text" class="overlay-text-end">
+            <div id="dialog_end_text" class="overlay-text-end">
                 Su sesión de VDI ha finalizado. Por favor, cierre esta ventana.
             </div>
         </div>
 
 		<div id="inactivity-close" class="overlay-dialog">
-            <div id="inactivity-close-text" class="overlay-text">
+            <div id="inactivity_close_text" class="overlay-text">
                 Su sesión de VDI se cerrará por inactividad.
             </div>
             <div id="dialog-close-input" class="overlay-input">
-                <button class="float-right" type="button" onclick="stopInactivityCountdown()">Cancelar</button>
+                <button class="float-right tr-cancel" type="button" onclick="stopInactivityCountdown()">Cancelar</button>
             </div>
         </div>
         <div id="inactivity-end" class="overlay-dialog">
-            <div id="inactivity-end-text" class="overlay-text-end">
+            <div id="inactivity_end_text" class="overlay-text-end">
                 Su sesión de VDI ha sido cerrada por inactividad. Por favor, cierre esta ventana.
             </div>
         </div>
 
         <div id="error" class="overlay-dialog">
-            <div id="error-text" class="overlay-text-end">
+            <div id="error_text" class="overlay-text-end">
                 Error de conexión. Por favor, cierre esta ventana.
             </div>
         </div>

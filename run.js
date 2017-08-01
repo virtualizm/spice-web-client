@@ -45,8 +45,31 @@ wdi.exceptionHandling = false; //disable "global try catch" to improve debugging
 
 wdi.IntegrationBenchmarkEnabled = false;// MS Excel loading time benchmark
 
+function translate() {
+	var langs = navigator.languages || [navigator.language || navigator.userLanguage];
+	for (var i in langs) {
+		var lang = langs[i];
+		if (typeof translations[lang] == 'undefined') {
+			lang = lang.substr(0, 2);
+			if (typeof translations[lang] == 'undefined') {
+				continue;
+			}
+		}
+		tr = translations[lang]
+		break;
+	}
+
+	for (var key in tr) {
+		console.log("Translate " + key)
+		$('#' + key).html(tr[key]);
+		$('.tr-' + key).html(tr[key]);
+	}
+}
+
 function start () {
 	var testSessionStarted = false;
+
+	translate();
 
 	$('#getStats').click(function() {
 		if (!testSessionStarted) {
