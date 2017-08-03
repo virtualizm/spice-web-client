@@ -37,6 +37,25 @@ var translations = {
         show_id: "This browser's ID is: _",
         no_auto_fs: "This browser does not support automatic fullscreen switch. Please, press F11 to switch manually.",
     },
+	ru: {
+        uploadfile: "Загрузить файл",
+        menubarbutton: "Скрыть меню",
+        menubarbutton_alt: "Показать меню",
+        fullscreen: "Во весь экран",
+        fullscreen_alt: "Нормальное окно",
+        ctrlaltdel: "Отправить Ctrl+Alt+Del",
+        showclientid: "Показать Id",
+        dialog_fs_text: "Приложение запрашивает доступ к вашему виртуальному рабочему столу в полноэкранном режиме.",
+        cancel: "Отмена",
+        accept: "Принять",
+        dialog_close_text: "Ваш сеанс VDI будет закрыт. Пожалуйста, подтвердите, что вы сохранили изменения.",
+        dialog_end_text: "Ваш сеанс VDI закончился. Пожалуйста, закройте это окно.",
+        inactivity_close_text: "Ваш сеанс VDI будет закрыт из-за неактивности  _ секунд",
+        inactivity_end_text: "Ваш сеанс VDI был закрыт из-за неактивности. Закройте это окно.",
+        error_text: "Ошибка подключения. Закройте это окно.",
+        show_id: "ID этого браузера: _",
+        no_auto_fs: "Этот браузер не поддерживает автоматическое переключение в полноэкранный режим. Нажмите F11 для переключения вручную.",
+    },
 };
 
 var tr = translations["en"]
