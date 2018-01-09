@@ -34,15 +34,15 @@ wdi.Keymap = {
      * @param e
      * @returns {*}
      */
-    getScanCodes: function(e, omitCtrl) {
+    getScanCodes: function(e, omitCtrl, type) {
         if (e['hasScanCode']) {
             return e['scanCode'];
-        } else if (!omitCtrl && this.handledByCtrlKeyCode(e['type'], e['keyCode'], e['generated'])) {// before doing anything else we check if the event about to be handled has to be intercepted
-            scanCodes = this.getScanCodeFromKeyCode(e['keyCode'], e['type'], this.ctrlKeymap, this.reservedCtrlKeymap);
+        } else if (!omitCtrl && this.handledByCtrlKeyCode(type, e['keyCode'], e['generated'])) {// before doing anything else we check if the event about to be handled has to be intercepted
+            scanCodes = this.getScanCodeFromKeyCode(e['keyCode'], type, this.ctrlKeymap, this.reservedCtrlKeymap);
             this.pressedKeyMap[e['keyCode']] = scanCodes;
             console.log("handleByCtrl: keycode=" + e['keyCode'] + " scancodes=" + scanCodes);
             if (scanCodes.length > 0) {
-                if (e['type'] == 'keydown' || e['type'] == 'keypress') {
+                if (type == 'keydown' || type == 'keypress') {
                     return [[224, 29, 0], scanCodes[0]];
                 } else {
                     return [[224, 157, 0], scanCodes[0]];
@@ -50,7 +50,7 @@ wdi.Keymap = {
             } else {
                 return scanCodes;
             }
-        } else if (!omitCtrl && this.handledByPreviousCtrlKeyCode(e['type'], e['keyCode'], e['generated'])) {
+        } else if (!omitCtrl && this.handledByPreviousCtrlKeyCode(type, e['keyCode'], e['generated'])) {
             scanCodes = this.pressedKeyMap[e['keyCode']];
             scanCodes[0][0] = scanCodes[0][0] | 0x80;
             console.log("handleByPreviousCtrl: keycode=" + e['keyCode'] + " scancodes=" + scanCodes);
@@ -58,10 +58,10 @@ wdi.Keymap = {
             return scanCodes;
         } else if (this.handledByCharmap(e['type'])) {
             return this.getScanCodesFromCharCode(e['charCode']);
-        } else if (this.handledByNormalKeyCode(e['type'], e['keyCode'], e['generated'])) {
+        } else if (this.handledByNormalKeyCode(type, e['keyCode'], e['generated'])) {
             additionalKeymap = { };
             additionalKeymap[76] = 0x26;
-            return this.getScanCodeFromKeyCode(e['keyCode'], e['type'], this.keymap, additionalKeymap);
+            return this.getScanCodeFromKeyCode(e['keyCode'], type, this.keymap, additionalKeymap);
         } else {
             return [];
         }
