@@ -37,7 +37,7 @@ wdi.ClientGui = $.spcExtend(wdi.EventObject.prototype, {
 	height: null,
 	canvas: null,
 	ack_wait: 0,
-	mouse_mode: 0,
+	mouse_mode: wdi.SpiceMouseModeTypes.SPICE_MOUSE_MODE_SERVER,
 	mouse_status: 0,
 	eventLayer: null,
 	counter: 0,
@@ -277,6 +277,7 @@ wdi.ClientGui = $.spcExtend(wdi.EventObject.prototype, {
 			this.mainCanvas = surface.surface_id;
 
 			this.eventLayer = this.createEventLayer('eventLayer', surface.width, surface.height);
+			this.updateMousePointer()
 
 			var evLayer = $(this.eventLayer).css({
 				position: 'absolute',
@@ -355,7 +356,7 @@ wdi.ClientGui = $.spcExtend(wdi.EventObject.prototype, {
 			var touch = event.originalEvent.touches[0] || event.originalEvent.changedTouches[0];
 			var x = touch.pageX;
 			var y = touch.pageY;
-			self.generateEvent.call(self, 'mousemove', [x + self.clientOffsetX, y + self.clientOffsetY, self.mouse_status]);
+			self.generateEvent.call(self, 'mousemove', [x + self.clientOffsetX, y + self.clientOffsetY, self.mouse_status, self.mouse_mode]);
 			if (event.originalEvent.touches.length === 1) {
 				self.enabledTouchMove = true;
 				self.launchRightClick.call(self, x, y);
@@ -385,7 +386,7 @@ wdi.ClientGui = $.spcExtend(wdi.EventObject.prototype, {
 				}
 
 
-				self.generateEvent.call(self, 'mousemove', [x + self.clientOffsetX, y + self.clientOffsetY - 80, self.mouse_status]);
+				self.generateEvent.call(self, 'mousemove', [x + self.clientOffsetX, y + self.clientOffsetY - 80, self.mouse_status, self.mouse_mode]);
 				var pos = $(this).offset();
 				var myX = x - pos.left;
 				var myY = y - pos.top;
@@ -490,7 +491,7 @@ wdi.ClientGui = $.spcExtend(wdi.EventObject.prototype, {
 			eventLayer['mousemove'](function(event) {
 				var x = event.pageX;
 				var y = event.pageY;
-				self.generateEvent.call(self, 'mousemove', [x + self.clientOffsetX, y + self.clientOffsetY, self.mouse_status]);
+				self.generateEvent.call(self, 'mousemove', [x + self.clientOffsetX, y + self.clientOffsetY, self.mouse_status, self.mouse_mode]);
 				event.preventDefault();
 			});
 
@@ -563,6 +564,19 @@ wdi.ClientGui = $.spcExtend(wdi.EventObject.prototype, {
 
 	setMouseMode: function(mode) {
 		this.mouse_mode = mode;
+		this.updateMousePointer();
+	},
+
+	updateMousePointer: function() {
+		if(this.eventLayer != null) {
+			if(this.mouse_mode == wdi.SpiceMouseModeTypes.SPICE_MOUSE_MODE_CLIENT) {
+				console.log("Setting cursor to default")
+				$(this.eventLayer).css('cursor', 'default');
+			} else {
+				console.log("Setting cursor to none")
+				$(this.eventLayer).css('cursor', 'none');
+			}
+		}
 	},
 
 	handleKey: function(e) {
