@@ -37,8 +37,8 @@ wdi.InputProcess = $.spcExtend(wdi.EventObject.prototype, {
 				});
 				this.spiceConnection.send(packet);
 			} else {
-				var dx = data[1][0] - wdi.VirtualMouse.lastMousePosition.x;
-				var dy = data[1][1] - wdi.VirtualMouse.lastMousePosition.y;
+				var dx = data[1][0];
+				var dy = data[1][1];
 
 				if (dx != 0 || dy != 0) {
 					packet = new wdi.SpiceMessage({
@@ -53,8 +53,8 @@ wdi.InputProcess = $.spcExtend(wdi.EventObject.prototype, {
 					this.spiceConnection.send(packet);
 				}
 
-				wdi.VirtualMouse.lastMousePosition.x = data[1][0];
-				wdi.VirtualMouse.lastMousePosition.y = data[1][1];
+				wdi.VirtualMouse.lastMousePosition.x += dx;
+				wdi.VirtualMouse.lastMousePosition.y += dy;
 			}
 		} else if(type == 'mousedown') {
 			packet = new wdi.SpiceMessage({

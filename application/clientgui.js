@@ -351,12 +351,20 @@ wdi.ClientGui = $.spcExtend(wdi.EventObject.prototype, {
 			eventLayer.attr('contentEditable', true);
 		}
 
+		eventLayer.requestPointerLock = eventLayer.requestPointerLock || eventLayer.mozRequestPointerLock;
+		document.exitPointerLock = document.exitPointerLock || document.mozExitPointerLock;
+
 		eventLayer.bind('touchstart', function(event) {
 			event.preventDefault();
 			var touch = event.originalEvent.touches[0] || event.originalEvent.changedTouches[0];
 			var x = touch.pageX;
 			var y = touch.pageY;
-			self.generateEvent.call(self, 'mousemove', [x + self.clientOffsetX, y + self.clientOffsetY, self.mouse_status, self.mouse_mode]);
+			if (self.mouse_mode == wdi.SpiceMouseModeTypes.SPICE_MOUSE_MODE_CLIENT) {
+				self.generateEvent.call(self, 'mousemove', [x + self.clientOffsetX, y + self.clientOffsetY, self.mouse_status, self.mouse_mode]);
+			} else {
+				self.generateEvent.call(self, 'mousemove', [x + self.clientOffsetX  - wdi.VirtualMouse.lastMousePosition.x,
+					 y + self.clientOffsetY  - wdi.VirtualMouse.lastMousePosition.y, self.mouse_status, self.mouse_mode]);
+			}
 			if (event.originalEvent.touches.length === 1) {
 				self.enabledTouchMove = true;
 				self.launchRightClick.call(self, x, y);
@@ -385,8 +393,13 @@ wdi.ClientGui = $.spcExtend(wdi.EventObject.prototype, {
 					self.launchMouseDown(); //fire again
 				}
 
+				if (self.mouse_mode == wdi.SpiceMouseModeTypes.SPICE_MOUSE_MODE_CLIENT) {
+					self.generateEvent.call(self, 'mousemove', [x + self.clientOffsetX, y + self.clientOffsetY - 80, self.mouse_status, self.mouse_mode]);
+				} else {
+					self.generateEvent.call(self, 'mousemove', [x + self.clientOffsetX - wdi.VirtualMouse.lastMousePosition.x, 
+						y + self.clientOffsetY - 80 - wdi.VirtualMouse.lastMousePosition.y, self.mouse_status, self.mouse_mode]);
+				}
 
-				self.generateEvent.call(self, 'mousemove', [x + self.clientOffsetX, y + self.clientOffsetY - 80, self.mouse_status, self.mouse_mode]);
 				var pos = $(this).offset();
 				var myX = x - pos.left;
 				var myY = y - pos.top;
@@ -485,13 +498,43 @@ wdi.ClientGui = $.spcExtend(wdi.EventObject.prototype, {
 
 				self.generateEvent.call(self, 'mousedown', button);
 				self.mouse_status = 1;
+				
+				if (self.mouse_mode == wdi.SpiceMouseModeTypes.SPICE_MOUSE_MODE_SERVER
+					&& !document.pointerLockElement
+					&& !document.mozPointerLockElement
+					&& typeof this.requestPointerLock === "function") {
+					this.requestPointerLock();
+				}
 				event.preventDefault();
 			});
 
 			eventLayer['mousemove'](function(event) {
 				var x = event.pageX;
 				var y = event.pageY;
-				self.generateEvent.call(self, 'mousemove', [x + self.clientOffsetX, y + self.clientOffsetY, self.mouse_status, self.mouse_mode]);
+				if (self.mouse_mode == wdi.SpiceMouseModeTypes.SPICE_MOUSE_MODE_CLIENT) {
+					self.generateEvent.call(self, 'mousemove', [x + self.clientOffsetX, y + self.clientOffsetY, self.mouse_status, self.mouse_mode]);
+				} else if (this.triedCapturingPointer) {
+					var e = event.originalEvent;
+					var dx = e.movementX  ||
+						e.mozMovementX    ||
+						e.webkitMovementX ||
+						0;
+					var dy = e.movementY  ||
+						e.mozMovementY    ||
+						e.webkitMovementY ||
+						0;
+					// Sometimes mousemove events with dx == dy == 0 are generated.
+					// For instance mouse click in chrome/windows.
+					if (!dx && !dy 
+						&& typeof e.movementX == 'undefined'
+						&& typeof e.mozMovementX == 'undefined'
+						&& typeof e.webkitMovementY == 'undefined'
+					) {
+						dx = x + self.clientOffsetX - wdi.VirtualMouse.lastMousePosition.x;
+						dy = y + self.clientOffsetY - wdi.VirtualMouse.lastMousePosition.y;
+					}
+					self.generateEvent.call(self, 'mousemove', [dx, dy, self.mouse_status, self.mouse_mode]);
+				}
 				event.preventDefault();
 			});
 
@@ -572,6 +615,9 @@ wdi.ClientGui = $.spcExtend(wdi.EventObject.prototype, {
 			if(this.mouse_mode == wdi.SpiceMouseModeTypes.SPICE_MOUSE_MODE_CLIENT) {
 				console.log("Setting cursor to default")
 				$(this.eventLayer).css('cursor', 'default');
+				if (typeof document.exitPointerLock === "function") {
+					document.exitPointerLock();
+				}
 			} else {
 				console.log("Setting cursor to none")
 				$(this.eventLayer).css('cursor', 'none');
