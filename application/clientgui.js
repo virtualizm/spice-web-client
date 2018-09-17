@@ -32,12 +32,21 @@ must display the words "Powered by eyeos" and retain the original copyright noti
 
 wdi.SPICE_INPUT_MOTION_ACK_BUNCH = 8;
 
+function lockChangeAlert () {
+	if (!document.pointerLockElement  &&
+		!document.mozPointerLockElement) {
+		  var e = $('#eventLayer')[0];
+		  e.triedCapturingPointer = false;
+	}
+}
+
 wdi.ClientGui = $.spcExtend(wdi.EventObject.prototype, {
 	width: null,
 	height: null,
 	canvas: null,
 	ack_wait: 0,
 	mouse_mode: wdi.SpiceMouseModeTypes.SPICE_MOUSE_MODE_SERVER,
+	triedCapturingPointer: false,
 	mouse_status: 0,
 	eventLayer: null,
 	counter: 0,
@@ -354,6 +363,12 @@ wdi.ClientGui = $.spcExtend(wdi.EventObject.prototype, {
 		eventLayer.requestPointerLock = eventLayer.requestPointerLock || eventLayer.mozRequestPointerLock;
 		document.exitPointerLock = document.exitPointerLock || document.mozExitPointerLock;
 
+		if ("onpointerlockchange" in document) {
+			document.addEventListener('pointerlockchange', lockChangeAlert, false);
+		  } else if ("onmozpointerlockchange" in document) {
+			document.addEventListener('mozpointerlockchange', lockChangeAlert, false);
+		  }
+
 		eventLayer.bind('touchstart', function(event) {
 			event.preventDefault();
 			var touch = event.originalEvent.touches[0] || event.originalEvent.changedTouches[0];
@@ -499,11 +514,14 @@ wdi.ClientGui = $.spcExtend(wdi.EventObject.prototype, {
 				self.generateEvent.call(self, 'mousedown', button);
 				self.mouse_status = 1;
 				
-				if (self.mouse_mode == wdi.SpiceMouseModeTypes.SPICE_MOUSE_MODE_SERVER
-					&& !document.pointerLockElement
-					&& !document.mozPointerLockElement
-					&& typeof this.requestPointerLock === "function") {
-					this.requestPointerLock();
+				
+				if (self.mouse_mode == wdi.SpiceMouseModeTypes.SPICE_MOUSE_MODE_SERVER) {
+					this.triedCapturingPointer = true;
+					if (!document.pointerLockElement
+						&& !document.mozPointerLockElement
+						&& typeof this.requestPointerLock === "function") {
+						this.requestPointerLock();
+					}
 				}
 				event.preventDefault();
 			});
@@ -607,6 +625,12 @@ wdi.ClientGui = $.spcExtend(wdi.EventObject.prototype, {
 
 	setMouseMode: function(mode) {
 		this.mouse_mode = mode;
+		if (mode == wdi.SpiceMouseModeTypes.SPICE_MOUSE_MODE_SERVER) {
+			this.triedCapturingPointer = false;
+			$.nok({
+				message: "Click inside the virtual desktop to capture the mouse until ESC is pressed."
+				});
+		}
 		this.updateMousePointer();
 	},
 
