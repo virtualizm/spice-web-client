@@ -517,11 +517,7 @@ wdi.ClientGui = $.spcExtend(wdi.EventObject.prototype, {
 				
 				if (self.mouse_mode == wdi.SpiceMouseModeTypes.SPICE_MOUSE_MODE_SERVER) {
 					this.triedCapturingPointer = true;
-					if (!document.pointerLockElement
-						&& !document.mozPointerLockElement
-						&& typeof this.requestPointerLock === "function") {
-						this.requestPointerLock();
-					}
+					app.clientGui.capturePointer();
 				}
 				event.preventDefault();
 			});
@@ -639,9 +635,7 @@ wdi.ClientGui = $.spcExtend(wdi.EventObject.prototype, {
 			if(this.mouse_mode == wdi.SpiceMouseModeTypes.SPICE_MOUSE_MODE_CLIENT) {
 				console.log("Setting cursor to default")
 				$(this.eventLayer).css('cursor', 'default');
-				if (typeof document.exitPointerLock === "function") {
-					document.exitPointerLock();
-				}
+				this.releasePointer();
 			} else {
 				console.log("Setting cursor to none")
 				$(this.eventLayer).css('cursor', 'none');
@@ -718,6 +712,19 @@ wdi.ClientGui = $.spcExtend(wdi.EventObject.prototype, {
 				backgroundColor: "black"
 			});
 		}*/
-	}
+	},
 
+	releasePointer() {
+		if (typeof document.exitPointerLock === "function") {
+			document.exitPointerLock();
+		}
+	},
+
+	capturePointer() {
+		if (!document.pointerLockElement
+			&& !document.mozPointerLockElement
+			&& typeof this.eventLayer.requestPointerLock === "function") {
+			this.eventLayer.requestPointerLock();
+		}
+	}
 });
