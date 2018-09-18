@@ -628,7 +628,7 @@ wdi.ClientGui = $.spcExtend(wdi.EventObject.prototype, {
 		if (mode == wdi.SpiceMouseModeTypes.SPICE_MOUSE_MODE_SERVER) {
 			this.triedCapturingPointer = false;
 			$.nok({
-				message: "Click inside the virtual desktop to capture the mouse until ESC is pressed."
+				message: tr['msg_click_to_capture']
 				});
 		}
 		this.updateMousePointer();
