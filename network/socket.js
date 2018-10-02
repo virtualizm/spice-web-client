@@ -84,9 +84,8 @@ wdi.Socket = $.spcExtend(wdi.EventObject.prototype, {
 				};
 				var l = getLocation(uri);
 				console.debug(l.hostname)
-				alert("Your browser does not trust the certificate. Please instruct your browser to trust the certificate for " +l.hostname + " and try again to open console. A window will open to help you");
-				window.open("https://"+l.hostname+"/check.html")
-				window.close();
+				alert("Could not open websocket at host " + l.hostname + ". Websocket server may be down. Also your browser may not trust the certificate. If so, please instruct your browser to trust the certificate for " +l.hostname + " and try again to open console.");
+				
 			}
 			self.status = wdi.socketStatus.failed;
 			self.fire('error', e);
