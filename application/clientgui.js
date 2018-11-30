@@ -274,9 +274,9 @@ wdi.ClientGui = $.spcExtend(wdi.EventObject.prototype, {
 		cnv.id = 'canvas_' + surface.surface_id;
 		cnv.width = surface.width;
 		cnv.height = surface.height;
-		cnv.style.position = 'absolute';
-		cnv.style.top = this.canvasMarginY + 'px';
-		cnv.style.left = this.canvasMarginX + 'px';
+		cnv.style.display = 'block';
+		cnv.style.margin = 'auto';
+		cnv.style["margin-top"] = this.canvasMarginY + 'px';
 		cnv.style.zIndex = '0';
 
 		this.canvas[surface.surface_id] = cnv;
@@ -289,20 +289,28 @@ wdi.ClientGui = $.spcExtend(wdi.EventObject.prototype, {
 			this.updateMousePointer()
 
 			var evLayer = $(this.eventLayer).css({
-				position: 'absolute',
-				top: this.canvasMarginY + 'px',
-			        left: this.canvasMarginX + 'px',
-			        zIndex: '0'
+				display: 'block',
+				margin: 'auto',
+				'margin-top': this.canvasMarginY + 'px'
 			})[0];
+
+			var evLayerWrapper = $('<div id="eventLayerWrapper"></div>').css({
+				position: 'absolute',
+				top: '0',
+			    width: '100%',
+			    height: '100%',
+			    zIndex: '0'
+			})[0];
+			evLayerWrapper.appendChild(evLayer);
 
 			if(this.layer) {
 				this.layer.appendChild(cnv);
-				this.layer.appendChild(evLayer);
+				this.layer.appendChild(evLayerWrapper);
 			} else {
 				document.body.appendChild(cnv);
-				document.body.appendChild(evLayer);
+				document.body.appendChild(evLayerWrapper);
 			}
-			
+
 			//this.enableKeyboard();
 		}
 
@@ -349,7 +357,6 @@ wdi.ClientGui = $.spcExtend(wdi.EventObject.prototype, {
 
 		var eventLayer = $('<canvas/>').css({
 			cursor: 'default',
-			position: 'absolute'
 		}).attr({
 				id: event_id,
 				width: width,
