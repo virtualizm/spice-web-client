@@ -7,27 +7,27 @@ Contact Jose Carlos Norte (jose@eyeos.com) for more information about this softw
 This program is free software; you can redistribute it and/or modify it under
 the terms of the GNU Affero General Public License version 3 as published by the
 Free Software Foundation.
- 
+
 This program is distributed in the hope that it will be useful, but WITHOUT
 ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
 details.
- 
+
 You should have received a copy of the GNU Affero General Public License
-version 3 along with this program in the file "LICENSE".  If not, see 
+version 3 along with this program in the file "LICENSE".  If not, see
 <http://www.gnu.org/licenses/agpl-3.0.txt>.
- 
+
 See www.eyeos.org for more details. All requests should be sent to licensing@eyeos.org
- 
+
 The interactive user interfaces in modified source and object code versions
 of this program must display Appropriate Legal Notices, as required under
 Section 5 of the GNU Affero General Public License version 3.
- 
+
 In accordance with Section 7(b) of the GNU Affero General Public License version 3,
 these Appropriate Legal Notices must retain the display of the "Powered by
-eyeos" logo and retain the original copyright notice. If the display of the 
+eyeos" logo and retain the original copyright notice. If the display of the
 logo is not reasonably feasible for technical reasons, the Appropriate Legal Notices
-must display the words "Powered by eyeos" and retain the original copyright notice. 
+must display the words "Powered by eyeos" and retain the original copyright notice.
  */
 
 wdi.SPICE_INPUT_MOTION_ACK_BUNCH = 8;
@@ -411,7 +411,7 @@ wdi.ClientGui = $.spcExtend(wdi.EventObject.prototype, {
 				if (self.mouse_mode == wdi.SpiceMouseModeTypes.SPICE_MOUSE_MODE_CLIENT) {
 					self.generateEvent.call(self, 'mousemove', [x + self.clientOffsetX, y + self.clientOffsetY - 80, self.mouse_status, self.mouse_mode]);
 				} else {
-					self.generateEvent.call(self, 'mousemove', [x + self.clientOffsetX - wdi.VirtualMouse.lastMousePosition.x, 
+					self.generateEvent.call(self, 'mousemove', [x + self.clientOffsetX - wdi.VirtualMouse.lastMousePosition.x,
 						y + self.clientOffsetY - 80 - wdi.VirtualMouse.lastMousePosition.y, self.mouse_status, self.mouse_mode]);
 				}
 
@@ -513,8 +513,8 @@ wdi.ClientGui = $.spcExtend(wdi.EventObject.prototype, {
 
 				self.generateEvent.call(self, 'mousedown', button);
 				self.mouse_status = 1;
-				
-				
+
+
 				if (self.mouse_mode == wdi.SpiceMouseModeTypes.SPICE_MOUSE_MODE_SERVER) {
 					this.triedCapturingPointer = true;
 					app.clientGui.capturePointer();
@@ -539,7 +539,7 @@ wdi.ClientGui = $.spcExtend(wdi.EventObject.prototype, {
 						0;
 					// Sometimes mousemove events with dx == dy == 0 are generated.
 					// For instance mouse click in chrome/windows.
-					if (!dx && !dy 
+					if (!dx && !dy
 						&& typeof e.movementX == 'undefined'
 						&& typeof e.mozMovementX == 'undefined'
 						&& typeof e.webkitMovementY == 'undefined'
