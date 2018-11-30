@@ -282,7 +282,7 @@ function start () {
 		'seamlessDesktopIntegration': false,
 		'externalClipboardHandling': false,
 		'disableClipboard': true,
-		'layer': document.getElementById('testVdi'),
+		'layer': document.getElementById('screen'),
 		'vmInfoToken': getURLParameter('vmInfoToken'),
 		'canvasMargin': {
 			'x': 0,
