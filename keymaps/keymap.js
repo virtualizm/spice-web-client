@@ -178,15 +178,14 @@ wdi.Keymap = {
                 console.log("Use KeyboardEvent.code = " + code + ", " + type);
                 result = []
                 scanCodes = this.defaultCodes[code].slice();
-                result.push(scanCodes.slice());
                 if (type != 'keydown' && type != 'keypress') {
                     if (scanCodes[0] == 0xE0) {
                         scanCodes[1] = scanCodes[1] | 0x80;
                     } else {
                         scanCodes[0] = scanCodes[0] | 0x80;
                     }
-                    result.push(scanCodes);
                 }
+                result.push(scanCodes.slice());
                 return result;
             }
         }
