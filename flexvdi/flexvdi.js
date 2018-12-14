@@ -11,31 +11,29 @@ function read_cookie(name) {
 function toggleMenuBar() {
     var width = $(window).width();
     var height = $(window).height();
-        
+
     if (document.getElementById("login").className == "") {
         document.getElementById("login").className = "hidden";
         document.getElementById("menubarbutton").firstChild.data = tr["menubarbutton_alt"];
-                
+
         var canvas = document.getElementById('canvas_0');
         var eventLayer = document.getElementById('eventLayer');
         if (canvas != null && eventLayer != null) {
             canvas.style.top = "0px";
             eventLayer.style.top = "0px";
             app.clientGui.setCanvasMargin({"x": 0, "y": 0})
-            app.clientGui.setClientOffset(0, 0);
             app.sendCommand('setResolution', {
 			    'width': width,
 			    'height': height
 		    });
         }
-    } else {        
+    } else {
         var canvas = document.getElementById('canvas_0');
         var eventLayer = document.getElementById('eventLayer');
         if (canvas != null && eventLayer != null) {
             canvas.style.top = "40px";
             eventLayer.style.top = "40px";
             app.clientGui.setCanvasMargin({"x": 0, "y": 40})
-            app.clientGui.setClientOffset(0, -40);
             app.sendCommand('setResolution', {
                 'width': width,
                 'height': height - 40
@@ -62,7 +60,7 @@ function closeSession(inactivity) {
     clearTimeout(inactivityCountdownTimer);
     app.sendWinL();
     app.disconnect();
-    
+
     if (document.getElementById("fullscreen").firstChild.data == tr["fullscreen_alt"]) {
         toggleFullScreen(document.body);
     }

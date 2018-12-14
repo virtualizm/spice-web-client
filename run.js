@@ -274,10 +274,6 @@ function start () {
 		'heartbeatTimeout': 4000,//miliseconds
 		'busFileServerBaseUrl': 'https://10.11.12.200/fileserver/',
 		'layout': data['layout'] || 'es',
-		'clientOffset': {
-			'x': 0,
-			'y': -40
-		},
 		'useWorkers': useWorkers,
 		'seamlessDesktopIntegration': false,
 		'externalClipboardHandling': false,

@@ -52,8 +52,6 @@ wdi.ClientGui = $.spcExtend(wdi.EventObject.prototype, {
 	counter: 0,
 	mainCanvas: 0,
 	firstTime: true,
-	clientOffsetX: 0,
-	clientOffsetY: 0,
 	magnifier: null,
 	magnifierBackground: null,
 	firstMove: true,
@@ -381,11 +379,12 @@ wdi.ClientGui = $.spcExtend(wdi.EventObject.prototype, {
 			var touch = event.originalEvent.touches[0] || event.originalEvent.changedTouches[0];
 			var x = touch.pageX;
 			var y = touch.pageY;
+			var offset = $(this).offset();
 			if (self.mouse_mode == wdi.SpiceMouseModeTypes.SPICE_MOUSE_MODE_CLIENT) {
-				self.generateEvent.call(self, 'mousemove', [x + self.clientOffsetX, y + self.clientOffsetY, self.mouse_status, self.mouse_mode]);
+				self.generateEvent.call(self, 'mousemove', [x - offset.left, y - offset.top, self.mouse_status, self.mouse_mode]);
 			} else {
-				self.generateEvent.call(self, 'mousemove', [x + self.clientOffsetX  - wdi.VirtualMouse.lastMousePosition.x,
-					 y + self.clientOffsetY  - wdi.VirtualMouse.lastMousePosition.y, self.mouse_status, self.mouse_mode]);
+				self.generateEvent.call(self, 'mousemove', [x - offset.left  - wdi.VirtualMouse.lastMousePosition.x,
+					 y - offset.top  - wdi.VirtualMouse.lastMousePosition.y, self.mouse_status, self.mouse_mode]);
 			}
 			if (event.originalEvent.touches.length === 1) {
 				self.enabledTouchMove = true;
@@ -415,16 +414,16 @@ wdi.ClientGui = $.spcExtend(wdi.EventObject.prototype, {
 					self.launchMouseDown(); //fire again
 				}
 
+				var offset = $(this).offset();
 				if (self.mouse_mode == wdi.SpiceMouseModeTypes.SPICE_MOUSE_MODE_CLIENT) {
-					self.generateEvent.call(self, 'mousemove', [x + self.clientOffsetX, y + self.clientOffsetY - 80, self.mouse_status, self.mouse_mode]);
+					self.generateEvent.call(self, 'mousemove', [x - offset.left, y - offset.top - 80, self.mouse_status, self.mouse_mode]);
 				} else {
-					self.generateEvent.call(self, 'mousemove', [x + self.clientOffsetX - wdi.VirtualMouse.lastMousePosition.x,
-						y + self.clientOffsetY - 80 - wdi.VirtualMouse.lastMousePosition.y, self.mouse_status, self.mouse_mode]);
+					self.generateEvent.call(self, 'mousemove', [x - offset.left - wdi.VirtualMouse.lastMousePosition.x,
+						y - offset.top - 80 - wdi.VirtualMouse.lastMousePosition.y, self.mouse_status, self.mouse_mode]);
 				}
 
-				var pos = $(this).offset();
-				var myX = x - pos.left;
-				var myY = y - pos.top;
+				var myX = x - offset.left;
+				var myY = y - offset.top;
 
 				//draw magnifier
 				if (self.firstMove) {
@@ -493,7 +492,6 @@ wdi.ClientGui = $.spcExtend(wdi.EventObject.prototype, {
 				}
 				self.isMouseDown = false;
 				self.generateEvent.call(self, 'mouseup', 0);
-				var pos = $(this).offset();
 
 				self.enabledTouchMove = false;
 				self.firstMove = true;
@@ -532,8 +530,9 @@ wdi.ClientGui = $.spcExtend(wdi.EventObject.prototype, {
 			eventLayer['mousemove'](function(event) {
 				var x = event.pageX;
 				var y = event.pageY;
+				var offset = $(this).offset();
 				if (self.mouse_mode == wdi.SpiceMouseModeTypes.SPICE_MOUSE_MODE_CLIENT) {
-					self.generateEvent.call(self, 'mousemove', [x + self.clientOffsetX, y + self.clientOffsetY, self.mouse_status, self.mouse_mode]);
+					self.generateEvent.call(self, 'mousemove', [x - offset.left, y - offset.top, self.mouse_status, self.mouse_mode]);
 				} else if (this.triedCapturingPointer) {
 					var e = event.originalEvent;
 					var dx = e.movementX  ||
@@ -551,8 +550,8 @@ wdi.ClientGui = $.spcExtend(wdi.EventObject.prototype, {
 						&& typeof e.mozMovementX == 'undefined'
 						&& typeof e.webkitMovementY == 'undefined'
 					) {
-						dx = x + self.clientOffsetX - wdi.VirtualMouse.lastMousePosition.x;
-						dy = y + self.clientOffsetY - wdi.VirtualMouse.lastMousePosition.y;
+						dx = x - offset.left - wdi.VirtualMouse.lastMousePosition.x;
+						dy = y - offset.top - wdi.VirtualMouse.lastMousePosition.y;
 					}
 					self.generateEvent.call(self, 'mousemove', [dx, dy, self.mouse_status, self.mouse_mode]);
 				}
@@ -660,11 +659,6 @@ wdi.ClientGui = $.spcExtend(wdi.EventObject.prototype, {
 			e.preventDefault();
 		}
 		//e.data[0].stuckKeysHandler.handleStuckKeys(e);
-	},
-
-	setClientOffset: function(x, y) {
-		this.clientOffsetX = x;
-		this.clientOffsetY = y;
 	},
 
 	setClipBoardData: function(data) {
