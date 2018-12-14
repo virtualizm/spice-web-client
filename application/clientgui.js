@@ -348,6 +348,7 @@ wdi.ClientGui = $.spcExtend(wdi.EventObject.prototype, {
 	setCanvasMargin: function(canvasMargin) {
 		this.canvasMarginX = canvasMargin.x;
 		this.canvasMarginY = canvasMargin.y;
+		$('#screen canvas').css({ 'margin-top': this.canvasMarginY + 'px' });
 	},
 
 	createEventLayer: function(event_id, width, height) {
