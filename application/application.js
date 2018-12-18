@@ -431,6 +431,48 @@ Application = $.spcExtend(wdi.DomainObject, {
         else if (keystroke == "Win+L") {
             this.sendKeyList([91, 76]);
         }
+        else if (keystroke == "Ctrl+Win+Right") {
+            this.sendKeyList([17, 91, 39]);
+        }
+        else if (keystroke == "Ctrl+Win+Left") {
+            this.sendKeyList([17, 91, 37]);
+        }
+        else if (keystroke == "Ctrl+Alt+F1") {
+            this.sendKeyList([17, 18, 112]);
+        }
+        else if (keystroke == "Ctrl+Alt+F2") {
+            this.sendKeyList([17, 18, 113]);
+        }
+        else if (keystroke == "Ctrl+Alt+F3") {
+            this.sendKeyList([17, 18, 114]);
+        }
+        else if (keystroke == "Ctrl+Alt+F4") {
+            this.sendKeyList([17, 18, 115]);
+        }
+        else if (keystroke == "Ctrl+Alt+F5") {
+            this.sendKeyList([17, 18, 116]);
+        }
+        else if (keystroke == "Ctrl+Alt+F6") {
+            this.sendKeyList([17, 18, 117]);
+        }
+        else if (keystroke == "Ctrl+Alt+F7") {
+            this.sendKeyList([17, 18, 118]);
+        }
+        else if (keystroke == "Ctrl+Alt+F8") {
+            this.sendKeyList([17, 18, 119]);
+        }
+        else if (keystroke == "Ctrl+Alt+F9") {
+            this.sendKeyList([17, 18, 120]);
+        }
+        else if (keystroke == "Ctrl+Alt+F10") {
+            this.sendKeyList([17, 18, 121]);
+        }
+        else if (keystroke == "Ctrl+Alt+F11") {
+            this.sendKeyList([17, 18, 122]);
+        }
+        else if (keystroke == "Ctrl+Alt+F12") {
+            this.sendKeyList([17, 18, 123]);
+        }
     },
 
 	dispose: function () {
