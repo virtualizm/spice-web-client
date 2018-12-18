@@ -185,7 +185,12 @@ must display the words "Powered by eyeos" and retain the original copyright noti
                 <button id="uploadfile" onclick="showExtWin();">Subir Fichero</button>
                 <button id="menubarbutton" onclick="toggleMenuBar();">Ocultar Menu</button>
                 <button id="fullscreen" onclick="toggleFullScreen(document.body);">Pantalla Completa</button>
-                <button id="ctrlaltdel" onclick="sendCtrlAltDel();">Enviar Ctrl+Alt+Del</button>
+                <div class="dropdown">
+                    <button id="keystroke" onclick="showKeystrokesMenu()" class="dropbtn">Combinación de teclas</button>
+                    <div id="keystrokes-menu" class="dropdown-content">
+                        <button onclick="sendCtrlAltDel()">Ctrl+Alt+Del</button>
+                    </div>
+                </div>
                 <button id="showclientid" onclick="showClientID();">Mostrar Id</button>
                 <button id="close" onclick="showCloseDialog();">&nbsp</button>
             </div>

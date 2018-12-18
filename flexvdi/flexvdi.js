@@ -146,6 +146,16 @@ function sendCtrlAltDel() {
     app.sendCtrlAltDel();
     document.getElementById("inputmanager").focus();
 }
+
+function showKeystrokesMenu() {
+    $("#keystrokes-menu").toggleClass("show");
+}
+window.addEventListener("click", function (event) {
+    if (!event.target.matches('.dropbtn')) {
+        $(".dropdown-content").removeClass("show");
+    }
+}, false);
+
 document.addEventListener("mozfullscreenchange", function () {
     (document.mozFullScreen) ? isFullScreen() : notFullScreen();
 }, false);
