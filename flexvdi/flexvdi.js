@@ -58,7 +58,7 @@ function closeSession(inactivity) {
     inactivityClosed = true;
     clearTimeout(inactivityTimer);
     clearTimeout(inactivityCountdownTimer);
-    app.sendWinL();
+    app.sendKeystroke("Win+L");
     app.disconnect();
 
     if (document.getElementById("fullscreen").firstChild.data == tr["fullscreen_alt"]) {
@@ -142,8 +142,8 @@ function notFullScreen() {
         showCloseDialog();
     }
 }
-function sendCtrlAltDel() {
-    app.sendCtrlAltDel();
+function sendKeystroke(e) {
+    app.sendKeystroke($(e).text());
     document.getElementById("inputmanager").focus();
 }
 

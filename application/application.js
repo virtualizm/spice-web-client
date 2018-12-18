@@ -388,194 +388,51 @@ Application = $.spcExtend(wdi.DomainObject, {
         this.lastMultimediaTime = Date.now();
     },
 
-    sendShortcut: function(shortcut) {
-        if(shortcut == wdi.keyShortcutsHandled.CTRLV) {
+    sendKeyList: function(keys) {
+        for (i = 0; i < keys.length; i++) {
             this.inputProcess.send([
                 "keydown",
                 [
                     {
                         'generated': true,
                         'type': "keydown",
-                        'keyCode': 17,
+                        'keyCode': keys[i],
                         'charCode': 0
                     }
                 ]
-
-            ], "keydown"); //ctrl down
-
-            this.inputProcess.send([
-                "keydown",
-                [
-                    {
-                        'generated': true,
-                        'type': "keydown",
-                        'keyCode': 86,
-                        'charCode': 0
-                    }
-                ]
-
-            ], "keydown"); //v
-
+            ], "keydown");
+        }
+        keys.reverse();
+        for (i = 0; i < keys.length; i++) {
             this.inputProcess.send([
                 "keyup",
                 [
                     {
                         'generated': true,
                         'type': "keyup",
-                        'keyCode': 86,
+                        'keyCode': keys[i],
                         'charCode': 0
                     }
                 ]
-
-            ], "keyup"); //v up
-
-            this.inputProcess.send([
-                "keyup",
-                [
-                    {
-                        'generated': true,
-                        'type': "keyup",
-                        'keyCode': 17,
-                        'charCode': 0
-                    }
-                ]
-
-            ], "keyup"); //ctrl up
+            ], "keyup");
         }
     },
 
-    sendCtrlAltDel: function() {
-        this.inputProcess.send([
-            "keydown",
-            [
-                {
-                    'generated': true,
-                    'type': "keydown",
-                    'keyCode': 17,
-                    'charCode': 0
-                }
-            ]
-
-        ], "keydown"); //ctrl down
-
-        this.inputProcess.send([
-            "keydown",
-            [
-                {
-                    'generated': true,
-                    'type': "keydown",
-                    'keyCode': 18,
-                    'charCode': 0
-                }
-            ]
-
-        ], "keydown"); //alt down
-
-        this.inputProcess.send([
-            "keydown",
-            [
-                {
-                    'generated': true,
-                    'type': "keydown",
-                    'keyCode': 46,
-                    'charCode': 0
-                }
-            ]
-
-        ], "keydown"); //del down
-
-        this.inputProcess.send([
-            "keyup",
-            [
-                {
-                    'generated': true,
-                    'type': "keyup",
-                    'keyCode': 46,
-                    'charCode': 0
-                }
-            ]
-
-        ], "keyup"); //del up
-
-        this.inputProcess.send([
-            "keyup",
-            [
-                {
-                    'generated': true,
-                    'type': "keyup",
-                    'keyCode': 18,
-                    'charCode': 0
-                }
-            ]
-
-        ], "keyup"); //alt up
-
-        this.inputProcess.send([
-            "keyup",
-            [
-                {
-                    'generated': true,
-                    'type': "keyup",
-                    'keyCode': 17,
-                    'charCode': 0
-                }
-            ]
-
-        ], "keyup"); //ctrl up
+    sendShortcut: function(shortcut) {
+        if(shortcut == wdi.keyShortcutsHandled.CTRLV) {
+            this.sendKeyList([17, 86]);
+        }
     },
 
-    sendWinL: function() {
-        this.inputProcess.send([
-            "keydown",
-            [
-                {
-                    'generated': true,
-                    'type': "keydown",
-                    'keyCode': 91,
-                    'charCode': 0
-                }
-            ]
-
-        ], "keydown"); //win down
-        this.inputProcess.send([
-            "keydown",
-            [
-                {
-                    'generated': true,
-                    'type': "keydown",
-                    'keyCode': 76,
-                    'charCode': 0
-                }
-            ]
-
-        ], "keydown"); //L down
-
-        this.inputProcess.send([
-            "keyup",
-            [
-                {
-                    'generated': true,
-                    'type': "keyup",
-                    'keyCode': 76,
-                    'charCode': 0
-                }
-            ]
-
-        ], "keyup"); //L up
-
-        this.inputProcess.send([
-            "keyup",
-            [
-                {
-                    'generated': true,
-                    'type': "keyup",
-                    'keyCode': 91,
-                    'charCode': 0
-                }
-            ]
-
-        ], "keyup"); //win up
+    sendKeystroke: function(keystroke) {
+        if (keystroke == "Ctrl+Alt+Del") {
+            this.sendKeyList([17, 18, 46]);
+        }
+        else if (keystroke == "Win+L") {
+            this.sendKeyList([91, 76]);
+        }
     },
+
 	dispose: function () {
 		this.disableKeyboard();
 		this.disconnect();
