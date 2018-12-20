@@ -253,6 +253,8 @@ function start () {
 		document.getElementById("showclientid").style.display = "none";
 	}
 
+	$("title").text((data['title'] || 'flexVDI Client') + ' - powered by eyeOS');
+
 	app.run({
 		'callback': f,
 		'context': this,
