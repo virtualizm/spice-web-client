@@ -428,6 +428,9 @@ Application = $.spcExtend(wdi.DomainObject, {
         if (keystroke == "Ctrl+Alt+Del") {
             this.sendKeyList([17, 18, 46]);
         }
+        else if (keystroke == "Alt+Tab") {
+            this.sendKeyList([18, 9]);
+        }
         else if (keystroke == "Win+L") {
             this.sendKeyList([91, 76]);
         }
