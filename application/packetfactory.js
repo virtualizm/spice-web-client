@@ -146,6 +146,9 @@ wdi.PacketFactory = {
                     case wdi.SpiceVars.SPICE_MSG_MAIN_CHANNELS_LIST:
                         packet = new wdi.MainMChannelsList().demarshall(rawSpiceMessage.body);
                         break;
+					case wdi.SpiceVars.SPICE_MSG_MAIN_MOUSE_MODE:
+						packet = new wdi.SpiceMouseMode().demarshall(rawSpiceMessage.body);
+                        break;
 				}
 				break;
 			case wdi.SpiceVars.SPICE_CHANNEL_CURSOR:

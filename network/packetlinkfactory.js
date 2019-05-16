@@ -48,8 +48,6 @@ wdi.PacketLinkFactory = {
 			case wdi.SpiceVars.SPICE_MSG_NOTIFY:
 				var packet = new wdi.RedNotify().demarshall(queue);
 				return packet;
-			case wdi.SpiceVars.SPICE_MSG_MAIN_MOUSE_MODE:
-				return new wdi.SpiceMouseMode().demarshall(queue);
 		}
 	}
 };
@@ -65,9 +63,6 @@ wdi.PacketLinkProcess = {
 			case wdi.SpiceVars.SPICE_MSG_PING:
 				var body = new wdi.RedPing({id: packet.id, time: packet.time}).marshall();
 				channel.sendObject(body, wdi.SpiceVars.SPICE_MSGC_PONG);
-				break;
-			case wdi.SpiceVars.SPICE_MSG_MAIN_MOUSE_MODE:
-				channel.fire('mouseMode', packet.current_mode);
 				break;
 			case wdi.SpiceVars.SPICE_MSG_NOTIFY:
 				channel.fire('notify');
