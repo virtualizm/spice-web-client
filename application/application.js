@@ -124,7 +124,8 @@ Application = $.spcExtend(wdi.DomainObject, {
                 this.connect({
 					host: c['host'],
 					port: c['port'],
-					protocol: c['protocol'],
+                    protocol: c['protocol'],
+                    url: c['url'],
 					vmHost: c['vmHost'],
 					vmPort: c['vmPort'],
                     vmInfoToken: c['vmInfoToken'],
@@ -334,7 +335,7 @@ Application = $.spcExtend(wdi.DomainObject, {
                 break;
             case "move":
                 this.busProcess.moveWindow(params['hwnd'], params['x'], params['y']);
-                break;
+                 break;
             case "minimize":
                 this.busProcess.minimizeWindow(params['hwnd']);
                 break;

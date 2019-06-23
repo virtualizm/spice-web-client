@@ -41,7 +41,12 @@ wdi.ConnectionControl = $.spcExtend(wdi.EventObject.prototype, {
 	},
 
 	connect: function(c) {
-		var url = wdi.Utils.generateWebSocketUrl(c.protocol, c.host, c.port, null, null,'raw', c.heartbeatToken);
+		if (c['url']) {
+			var url = c['url'];
+		}
+		else {
+			var url = wdi.Utils.generateWebSocketUrl(c.protocol, c.host, c.port, null, null, 'raw', c.heartbeatToken);
+		}
 		this.socket.connect(url);
 		this.pendingTimeToConnectionLost = c.heartbeatTimeout;
 		wdi.Debug.log('ConnectionControl: connected');

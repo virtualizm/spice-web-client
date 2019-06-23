@@ -98,7 +98,15 @@ wdi.SpiceChannel = $.spcExtend(wdi.EventObject.prototype, {
 	},
 
 	connect: function(connectionInfo, channel, connectionId, proxy) {
-		var url = wdi.Utils.generateWebSocketUrl(connectionInfo.protocol, connectionInfo.host, connectionInfo.port, connectionInfo.vmHost, connectionInfo.vmPort, 'spice', connectionInfo.vmInfoToken);
+		if (connectionInfo.url) {
+			var url = connectionInfo.url;
+		}
+		else {
+			var url = wdi.Utils.generateWebSocketUrl(connectionInfo.protocol, connectionInfo.host, connectionInfo.port, connectionInfo.vmHost, connectionInfo.vmPort, 'spice', connectionInfo.vmInfoToken);
+		}
+		this.channel = channel;
+		this.connectionId = connectionId || 0;
+		this.socketQ.connect(url);
 		this.channel = channel;
 		this.connectionId = connectionId || 0;
 		this.socketQ.connect(url);
