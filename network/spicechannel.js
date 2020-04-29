@@ -107,9 +107,6 @@ wdi.SpiceChannel = $.spcExtend(wdi.EventObject.prototype, {
 		this.channel = channel;
 		this.connectionId = connectionId || 0;
 		this.socketQ.connect(url);
-		this.channel = channel;
-		this.connectionId = connectionId || 0;
-		this.socketQ.connect(url);
 		this.proxy = proxy;
 		this.token = connectionInfo.token;
 		this.packetReassembler.start();

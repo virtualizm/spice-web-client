@@ -85,7 +85,7 @@ function start () {
 		}
 	});
 
-	wdi.graphicDebug = new wdi.GraphicDebug({debugMode: false});
+	wdi.graphicDebug = new wdi.GraphicDebug({debugMode: true});
 	app = new Application();
 
 	window.vdiLoadTest = getURLParameter('vdiLoadTest') || false;
@@ -254,35 +254,17 @@ function start () {
 	}
 
 	$("title").text((data['title'] || 'flexVDI Client') + ' - powered by eyeOS');
-
-	var request = new XMLHttpRequest();
-	var data = {
-		"username": "admin",
-		"password": "admin"
-	}
-	request.open('POST', 'http://localhost:8000/v1/login', false);
-	request.setRequestHeader("Content-Type", "application/json");
-	request.send(JSON.stringify(data));
-
-	if (request.status === 200) {
-		var jsonResponse = JSON.parse(request.responseText)
-		var token = jsonResponse["token"]
-		console.log("Received authentication token")
-	}
-	else {
-		console.log("Requesting the authentication token failed")
-		console.log(request.responseText);
-		return;
-	}
+	
+	var token = "hui"
 
 	app.run({
 		'callback': f,
 		'context': this,
-		'url': 'ws://localhost:8000/v1/clusters/' + getURLParameter('cluster') + '/console/' + getURLParameter('instance') + '?token=' + token,
+		'url': getURLParameter('url'),
 		'host': false,
 		'port': false,
 		'protocol': false,
-		'token': false,
+		'token': '123',
 		'vmHost': getURLParameter('vmhost') || false,
 		'vmPort': getURLParameter('vmport') || false,
 		'useBus': false,
@@ -296,7 +278,7 @@ function start () {
         'heartbeatToken': 'heartbeat',
 		'heartbeatTimeout': 4000,//miliseconds
 		'busFileServerBaseUrl': 'https://10.11.12.200/fileserver/',
-		'layout': data['layout'] || 'us',
+		'layout': data['layout'] || 'es',
 		'useWorkers': useWorkers,
 		'seamlessDesktopIntegration': false,
 		'externalClipboardHandling': false,
